@@ -1,0 +1,2401 @@
+文件：MAIN_PROGRAM_V102.asm 编译器版本 2.96 页次1
+
+
+   1  0000              
+   2  0000              message '****************************************************************'
+   3  0000              message '*PROJECT NAME :MAIN PROGRAM V102                               *'
+   4  0000              message '*     VERSION :V102                                            *'
+   5  0000              message '* ICE VERSION :                                                *'
+   6  0000              message '*      DATE   :20150317                                        *'
+   7  0000              message '*      REMARK :V102 modify ESCpowerIDcheck2,PBP                *'
+   8  0000              message '****************************************************************'
+   9  0000                              ;=INCLUDE REFERENCE FILE
+  10  0000                              INCLUDE MAIN_PROGRAM_V102.INC
+
+
+
+
+
+
+
+
+
+
+
+
+  11  0000              
+  12  0000                              ;-PUBLIC LABEL
+  13  0000                              PUBLIC  _LOAD_TKS_GLOBE_VARIES
+  14  0000                              PUBLIC  _LOAD_HXT_REFERENCE
+  15  0000              
+  16  0000              CALL_   MACRO   FUNCTION
+  17  0000                      ifdef   FUNCTION
+  18  0000                              ifdef   PBP
+  19  0000                              MOV     A,bank FUNCTION
+  20  0000                              MOV     PBP,A
+  21  0000                              endif
+  22  0000                              CALL    FUNCTION
+  23  0000                      endif
+  24  0000                              ENDM
+  25  0000              
+  26  0000              EXTEND_FUNCTION_INITIAL MACRO
+  27  0000                              CALL_   EXTEND_FUNCTION_1A_INITIAL
+  28  0000                              CALL_   EXTEND_FUNCTION_1B_INITIAL
+  29  0000                              CALL_   EXTEND_FUNCTION_1C_INITIAL
+  30  0000                              CALL_   EXTEND_FUNCTION_1D_INITIAL
+  31  0000                              CALL_   EXTEND_FUNCTION_1E_INITIAL
+  32  0000                              CALL_   EXTEND_FUNCTION_1F_INITIAL
+  33  0000                              CALL_   EXTEND_FUNCTION_1G_INITIAL
+  34  0000                              CALL_   EXTEND_FUNCTION_1H_INITIAL
+  35  0000              
+  36  0000                              CALL_   EXTEND_FUNCTION_2A_INITIAL
+  37  0000                              CALL_   EXTEND_FUNCTION_2B_INITIAL
+  38  0000                              CALL_   EXTEND_FUNCTION_2C_INITIAL
+  39  0000                              CALL_   EXTEND_FUNCTION_2D_INITIAL
+  40  0000                              CALL_   EXTEND_FUNCTION_2E_INITIAL
+  41  0000                              CALL_   EXTEND_FUNCTION_2F_INITIAL
+  42  0000                              CALL_   EXTEND_FUNCTION_2G_INITIAL
+  43  0000                              CALL_   EXTEND_FUNCTION_2H_INITIAL
+  44  0000                              ENDM
+  45  0000              
+  46  0000              EXTEND_FUNCTION MACRO
+  47  0000                              CALL_   EXTEND_FUNCTION_1A
+文件：MAIN_PROGRAM_V102.asm 编译器版本 2.96 页次2
+
+  48  0000                              CALL_   EXTEND_FUNCTION_1B
+  49  0000                              CALL_   EXTEND_FUNCTION_1C
+  50  0000                              CALL_   EXTEND_FUNCTION_1D
+  51  0000                              CALL_   EXTEND_FUNCTION_1E
+  52  0000                              CALL_   EXTEND_FUNCTION_1F
+  53  0000                              CALL_   EXTEND_FUNCTION_1G
+  54  0000                              CALL_   EXTEND_FUNCTION_1H
+  55  0000              
+  56  0000                              CALL_   EXTEND_FUNCTION_2A
+  57  0000                              CALL_   EXTEND_FUNCTION_2B
+  58  0000                              CALL_   EXTEND_FUNCTION_2C
+  59  0000                              CALL_   EXTEND_FUNCTION_2D
+  60  0000                              CALL_   EXTEND_FUNCTION_2E
+  61  0000                              CALL_   EXTEND_FUNCTION_2F
+  62  0000                              CALL_   EXTEND_FUNCTION_2G
+  63  0000                              CALL_   EXTEND_FUNCTION_2H
+  64  0000                              ENDM
+  65  0000                              ;==============
+  66  0000                              ;=DATA SETCTION
+  67  0000                              ;==============
+  68  0000              MAIN_DATA       .SECTION          'DATA'
+  69  0000              
+  70  0000              ifndef  ESCpowerIDcheck
+  71  0000  0002[       POR_ID          DB      2 DUP(?)
+            00
+            ]
+  72  0002              endif
+  73  0002              
+  74  0002              
+  75  0002              
+  76  0002                              ;==============
+  77  0002                              ;=CODE SETCTION
+  78  0002                              ;==============
+  79  0000              PROGRAM_ENTRY   .SECTION  AT 000H 'CODE'
+  80  0000                      ifdef   PBP
+  81  0000                              CLR     PBP
+  82  0000                              ifndef  ESCpowerIDcheck
+  83  0000                              MOV     A,042H      ;ASCII = B
+  84  0000                              endif
+  85  0000                      else
+  86  0000                              ;----------------
+  87  0000                              ;-SET POR ID 1---
+  88  0000                              ;----------------
+  89  0000                              ifndef  ESCpowerIDcheck
+  90  0000  0F42                        MOV     A,042H      ;ASCII = B
+  91  0001  3A8A                        SNZ     TO
+  92  0002  0080     R                  MOV     POR_ID[0],A
+  93  0003                              endif
+  94  0003                      endif
+  95  0003  2800     R                  JMP     PROGRAM_RESET
+  96  0004              
+  97  0004                              ;==============
+  98  0004                              ;=MAIN PROGRAM=
+  99  0004                              ;==============
+ 100  0000              MAIN_PROGRAM    .SECTION          'CODE'
+ 101  0000              
+ 102  0000                              ;;***********************
+ 103  0000              PROGRAM_RESET:  ;;* PROGRAM ENTRY *******
+ 104  0000                              ;;***********************
+ 105  0000                      ifdef   PBP
+文件：MAIN_PROGRAM_V102.asm 编译器版本 2.96 页次3
+
+ 106  0000                              ifndef  ESCpowerIDcheck
+ 107  0000                              SNZ     TO
+ 108  0000                              MOV     POR_ID[0],A
+ 109  0000                              endif
+ 110  0000                      endif
+ 111  0000                              ;----------------
+ 112  0000                              ;-SET POR ID 2---
+ 113  0000                              ;----------------
+ 114  0000                      ifndef  ESCpowerIDcheck
+ 115  0000  0F53                        MOV     A,053H      ;ASCII = S
+ 116  0001  0080     R                  MOV     POR_ID[1],A
+ 117  0002                      endif
+ 118  0002              
+ 119  0002              
+ 120  0002                              ;---------------------
+ 121  0002                              ;-MCU HARDWARE INITIAL
+ 122  0002                              ;---------------------
+ 123  0002                              MCU_HARDWARE_INITIAL
+ 123  0002            1                 ifdef   _BS83A02A_
+ 123  0002            1                         MOV     A,00000011B
+ 123  0002            1                         MOV [0BH],A
+ 123  0002            1                         ;-WDT INITIAL USE 125/500MS WHEN ENABLE POWER SAVE MODE
+ 123  0002            1                       ;;MOV     A,01010011B     ;500   MS
+ 123  0002            1                         MOV     A,01010010B     ;125   MS
+ 123  0002            1                         MOV [01AH],A
+ 123  0002            1                         ;-IF POWER SAVING MODE ENABLE
+ 123  0002            1                         if 0==1
+ 123  0002            1                         SZ [0AH].5
+ 123  0002            1                         JMP     WDT_WAKEUP      ;IF WAKEUP BY WDT TIME OUT
+ 123  0002            1                         endif
+ 123  0002            1                         ;-CLEAR BANK0 060H~0FFH
+ 123  0002            1                         MOV     A,60H
+ 123  0002            1                         CALL    CLEAR_RAM
+ 123  0002            1                 endif
+ 123  0002            1                 ;--------------------------------
+ 123  0002            1                 ;-INITIAL FOR BS83A04A  ---------
+ 123  0002            1                 ;--------------------------------
+ 123  0002            1                 ifdef   _BS83A04A_
+ 123  0002            1                         MOV     A,00000011B
+ 123  0002            1                         MOV [0BH],A
+ 123  0002            1                         ;-WDT INITIAL USE 125/500MS WHEN ENABLE POWER SAVE MODE
+ 123  0002            1                       ;;MOV     A,01010011B     ;500   MS
+ 123  0002            1                         MOV     A,01010010B     ;125   MS
+ 123  0002            1                         MOV [01AH],A
+ 123  0002            1                         ;-IF POWER SAVING MODE ENABLE
+ 123  0002            1                         if 0==1
+ 123  0002            1                         SZ [0AH].5
+ 123  0002            1                         JMP     WDT_WAKEUP      ;IF WAKEUP BY WDT TIME OUT
+ 123  0002            1                         endif
+ 123  0002            1                         ;-CLEAR BANK0 060H~0FFH
+ 123  0002            1                         MOV     A,60H
+ 123  0002            1                         CALL    CLEAR_RAM
+ 123  0002            1                 endif
+ 123  0002            1 
+ 123  0002            1                 ;--------------------------------
+ 123  0002            1                 ;-INITIAL FOR BS83B04A  ---------
+ 123  0002            1                 ;--------------------------------
+ 123  0002            1                 ifdef   _BS83B04A_
+ 123  0002            1                         MOV     A,00000011B
+ 123  0002            1                         MOV [0BH],A
+文件：MAIN_PROGRAM_V102.asm 编译器版本 2.96 页次4
+
+ 123  0002            1                         ;-WDT INITIAL USE 125/500MS WHEN ENABLE POWER SAVE MODE
+ 123  0002            1                       ;;MOV     A,01010011B     ;500   MS
+ 123  0002            1                         MOV     A,01010010B     ;125   MS
+ 123  0002            1                         MOV [01AH],A
+ 123  0002            1                         ;-IF POWER SAVING MODE ENABLE
+ 123  0002            1                         if 0==1
+ 123  0002            1                         SZ [0AH].5
+ 123  0002            1                         JMP     WDT_WAKEUP      ;IF WAKEUP BY WDT TIME OUT
+ 123  0002            1                         endif
+ 123  0002            1                         ;-CLEAR BANK0 060H~0FFH
+ 123  0002            1                         MOV     A,60H
+ 123  0002            1                         CALL    CLEAR_RAM
+ 123  0002            1                 endif
+ 123  0002            1 
+ 123  0002            1                 ;--------------------------------
+ 123  0002            1                 ;-INITIAL FOR BS83B08A  ---------
+ 123  0002            1                 ;--------------------------------
+ 123  0002            1                 ifdef   _BS83B08A_
+ 123  0002            1                         ;-SET SYSTEM CLOCK
+ 123  0002            1                         MOV     A,(( 2<<4)^00110000B)&00110000B
+ 123  0002            1                         MOV [0CH],A
+ 123  0002            1                         ;--
+ 123  0002            1                         MOV     A,00000011B
+ 123  0002            1                         MOV [0BH],A
+ 123  0002            1                         ;-WDT INITIAL USE 125/500MS WHEN ENABLE POWER SAVE MODE
+ 123  0002            1                       ;;MOV     A,01010011B     ;500   MS
+ 123  0002            1                         MOV     A,01010010B     ;125   MS
+ 123  0002            1                         MOV [01AH],A
+ 123  0002            1                         ;-IF POWER SAVING MODE ENABLE
+ 123  0002            1                         if 0==1
+ 123  0002            1                         SZ [0AH].5
+ 123  0002            1                         JMP     WDT_WAKEUP      ;IF WAKEUP BY WDT TIME OUT
+ 123  0002            1                         endif
+ 123  0002            1                         ;-CLEAR BANK0 060H~0FFH
+ 123  0002            1                         MOV     A,60H
+ 123  0002            1                         CALL    CLEAR_RAM
+ 123  0002            1                 endif
+ 123  0002            1 
+ 123  0002            1                 ;--------------------------------
+ 123  0002            1                 ;-INITIAL FOR BS83B12A  ---------
+ 123  0002            1                 ;--------------------------------
+ 123  0002            1                 ifdef   _BS83B12A_
+ 123  0002            1                         ;-SET SYSTEM CLOCK
+ 123  0002            1                         MOV     A,(( 2<<4)^00110000B)&00110000B
+ 123  0002            1                         MOV [0CH],A
+ 123  0002            1                         ;--
+ 123  0002            1                         MOV     A,00000011B
+ 123  0002            1                         MOV [0BH],A
+ 123  0002            1                         ;-WDT INITIAL USE 125/500MS WHEN ENABLE POWER SAVE MODE
+ 123  0002            1                       ;;MOV     A,01010011B     ;500   MS
+ 123  0002            1                         MOV     A,01010010B     ;125   MS
+ 123  0002            1                         MOV [01AH],A
+ 123  0002            1                         ;-IF POWER SAVING MODE ENABLE
+ 123  0002            1                         if 0==1
+ 123  0002            1                         SZ [0AH].5
+ 123  0002            1                         JMP     WDT_WAKEUP      ;IF WAKEUP BY WDT TIME OUT
+ 123  0002            1                         endif
+ 123  0002            1                         ;-CLEAR BANK1 080H~0FFH
+ 123  0002            1                         MOV     A,1
+ 123  0002            1                         MOV [04H],A
+文件：MAIN_PROGRAM_V102.asm 编译器版本 2.96 页次5
+
+ 123  0002            1                         MOV     A,80H
+ 123  0002            1                         CALL    CLEAR_RAM
+ 123  0002            1                         ;-CLEAR BANK0 060H~0FFH
+ 123  0002            1                         CLR [04H]
+ 123  0002            1                         MOV     A,60H
+ 123  0002            1                         CALL    CLEAR_RAM
+ 123  0002            1                 endif
+ 123  0002            1 
+ 123  0002            1                 ;--------------------------------
+ 123  0002            1                 ;-INITIAL FOR BS83B16A  ---------
+ 123  0002            1                 ;--------------------------------
+ 123  0002            1                 ifdef   _BS83B16A_
+ 123  0002            1                         ;-SET SYSTEM CLOCK
+ 123  0002            1                         MOV     A,(( 2<<4)^00110000B)&00110000B
+ 123  0002            1                         MOV [0CH],A
+ 123  0002            1                         ;--
+ 123  0002            1                         MOV     A,00000011B
+ 123  0002            1                         MOV [0BH],A
+ 123  0002            1                         ;-WDT INITIAL USE 125/500MS WHEN ENABLE POWER SAVE MODE
+ 123  0002            1                       ;;MOV     A,01010011B     ;500   MS
+ 123  0002            1                         MOV     A,01010010B     ;125   MS
+ 123  0002            1                         MOV [01AH],A
+ 123  0002            1                         ;-IF POWER SAVING MODE ENABLE
+ 123  0002            1                         if 0==1
+ 123  0002            1                         SZ [0AH].5
+ 123  0002            1                         JMP     WDT_WAKEUP      ;IF WAKEUP BY WDT TIME OUT
+ 123  0002            1                         endif
+ 123  0002            1                         ;-CLEAR BANK1 080H~0FFH
+ 123  0002            1                         MOV     A,1
+ 123  0002            1                         MOV [04H],A
+ 123  0002            1                         MOV     A,80H
+ 123  0002            1                         CALL    CLEAR_RAM
+ 123  0002            1                         ;-CLEAR BANK0 060H~0FFH
+ 123  0002            1                         CLR [04H]
+ 123  0002            1                         MOV     A,60H
+ 123  0002            1                         CALL    CLEAR_RAM
+ 123  0002            1                 endif
+ 123  0002            1 
+ 123  0002            1 
+ 123  0002            1                 ;--------------------------------
+ 123  0002            1                 ;-INITIAL FOR BS84B06A  ---------
+ 123  0002            1                 ;--------------------------------
+ 123  0002            1                 ifdef   _BS84B06A_
+ 123  0002            1                         ;-SET SYSTEM CLOCK
+ 123  0002  0F10      1                         MOV     A,(( 2<<4)^00110000B)&00110000B
+ 123  0003  008C      1                         MOV [0CH],A
+ 123  0004            1                         ;--
+ 123  0004  0F03      1                         MOV     A,00000011B
+ 123  0005  008B      1                         MOV [0BH],A
+ 123  0006            1                         ;-WDT INITIAL USE 125/500MS WHEN ENABLE POWER SAVE MODE
+ 123  0006            1                       ;;MOV     A,01010011B     ;500   MS
+ 123  0006  0F52      1                         MOV     A,01010010B     ;125   MS
+ 123  0007  009A      1                         MOV [01AH],A
+ 123  0008            1                         ;-IF POWER SAVING MODE ENABLE
+ 123  0008            1                         if 0==1
+ 123  0008            1                         SZ [0AH].5
+ 123  0008            1                         JMP     WDT_WAKEUP      ;IF WAKEUP BY WDT TIME OUT
+ 123  0008            1                         endif
+ 123  0008            1                         ;-DISABLE ADC
+ 123  0008  1F32      1                         CLR [032H]
+文件：MAIN_PROGRAM_V102.asm 编译器版本 2.96 页次6
+
+ 123  0009  0F60      1                         MOV     A,01100000B
+ 123  000A  00B0      1                         MOV [030H],A
+ 123  000B  1F31      1                         CLR [031H]
+ 123  000C            1                         ;-CLEAR BANK1 080H~0FFH
+ 123  000C  0F01      1                         MOV     A,1
+ 123  000D  0084      1                         MOV [04H],A
+ 123  000E  0F80      1                         MOV     A,80H
+ 123  000F  2000     R1                         CALL    CLEAR_RAM
+ 123  0010            1                         ;-CLEAR BANK0 060H~0FFH
+ 123  0010  1F04      1                         CLR [04H]
+ 123  0011  0F60      1                         MOV     A,60H
+ 123  0012  2000     R1                         CALL    CLEAR_RAM
+ 123  0013            1                 endif
+ 123  0013            1 
+ 123  0013            1 
+ 123  0013            1                 ;--------------------------------
+ 123  0013            1                 ;-INITIAL FOR BS84B08A  ---------
+ 123  0013            1                 ;--------------------------------
+ 123  0013            1                 ifdef   _BS84B08A_
+ 123  0013            1                         ;-SET SYSTEM CLOCK
+ 123  0013            1                         MOV     A,(( 2<<4)^00110000B)&00110000B
+ 123  0013            1                         MOV [0CH],A
+ 123  0013            1                         ;--
+ 123  0013            1                         MOV     A,00000011B
+ 123  0013            1                         MOV [0BH],A
+ 123  0013            1                         ;-WDT INITIAL USE 125/500MS WHEN ENABLE POWER SAVE MODE
+ 123  0013            1                       ;;MOV     A,01010011B     ;500   MS
+ 123  0013            1                         MOV     A,01010010B     ;125   MS
+ 123  0013            1                         MOV [01AH],A
+ 123  0013            1                         ;-IF POWER SAVING MODE ENABLE
+ 123  0013            1                         if 0==1
+ 123  0013            1                         SZ [0AH].5
+ 123  0013            1                         JMP     WDT_WAKEUP      ;IF WAKEUP BY WDT TIME OUT
+ 123  0013            1                         endif
+ 123  0013            1                         ;-DISABLE ADC
+ 123  0013            1                         CLR [032H]
+ 123  0013            1                         MOV     A,01100000B
+ 123  0013            1                         MOV [030H],A
+ 123  0013            1                         CLR [031H]
+ 123  0013            1                         ;-CLEAR BANK1 080H~0FFH
+ 123  0013            1                         MOV     A,1
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK0 060H~0FFH
+ 123  0013            1                         CLR [04H]
+ 123  0013            1                         MOV     A,60H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                 endif
+ 123  0013            1 
+ 123  0013            1                 ;--------------------------------
+ 123  0013            1                 ;-INITIAL FOR BS84C12A  ---------
+ 123  0013            1                 ;--------------------------------
+ 123  0013            1                 ifdef   _BS84C12A_
+ 123  0013            1                         ;-SET SYSTEM CLOCK
+ 123  0013            1                         MOV     A,(( 2<<4)^00110000B)&00110000B
+ 123  0013            1                         MOV [0CH],A
+ 123  0013            1                         ;--
+ 123  0013            1                         MOV     A,00000011B
+ 123  0013            1                         MOV [0BH],A
+文件：MAIN_PROGRAM_V102.asm 编译器版本 2.96 页次7
+
+ 123  0013            1                         ;-WDT INITIAL USE 125/500MS WHEN ENABLE POWER SAVE MODE
+ 123  0013            1                       ;;MOV     A,01010011B     ;500   MS
+ 123  0013            1                         MOV     A,01010010B     ;125   MS
+ 123  0013            1                         MOV [01AH],A
+ 123  0013            1                         ;-IF POWER SAVING MODE ENABLE
+ 123  0013            1                         if 0==1
+ 123  0013            1                         SZ [0AH].5
+ 123  0013            1                         JMP     WDT_WAKEUP      ;IF WAKEUP BY WDT TIME OUT
+ 123  0013            1                         endif
+ 123  0013            1                         ;-DISABLE ADC
+ 123  0013            1                         CLR [032H]
+ 123  0013            1                         MOV     A,01100000B
+ 123  0013            1                         MOV [030H],A
+ 123  0013            1                         CLR [031H]
+ 123  0013            1                         ;-CLEAR BANK2 280H~2DFH
+ 123  0013            1                         MOV     A,2
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK1 180H~1FFH
+ 123  0013            1                         MOV     A,1
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK0 060H~0FFH
+ 123  0013            1                         CLR [04H]
+ 123  0013            1                         MOV     A,60H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                 endif
+ 123  0013            1                 ;--------------------------------
+ 123  0013            1                 ;-INITIAL FOR BS84C16A  ---------
+ 123  0013            1                 ;--------------------------------
+ 123  0013            1                 ifdef   _BS84C16A_
+ 123  0013            1                         ;-SET SYSTEM CLOCK
+ 123  0013            1                         MOV     A,(( 2<<4)&00110000B)
+ 123  0013            1                         MOV [0CH],A          ;BIT7=FSYSON
+ 123  0013            1                         ;--                     ;BIT5:BIT4=00/11:8MHZ ; 01:12MHZ ; 10:16MHZ
+ 123  0013            1                         MOV     A,00000011B
+ 123  0013            1                         MOV [0BH],A
+ 123  0013            1                         ;-WDT INITIAL USE 125/500MS WHEN ENABLE POWER SAVE MODE
+ 123  0013            1                       ;;MOV     A,01010011B     ;500   MS
+ 123  0013            1                         MOV     A,01010010B     ;125   MS
+ 123  0013            1                         MOV [01AH],A
+ 123  0013            1                         ;-IF POWER SAVING MODE ENABLE
+ 123  0013            1                         if 0==1
+ 123  0013            1                         SZ [0AH].5
+ 123  0013            1                         JMP     WDT_WAKEUP      ;IF WAKEUP BY WDT TIME OUT
+ 123  0013            1                         endif
+ 123  0013            1                         ;-DISABLE ADC
+ 123  0013            1                         CLR [032H]
+ 123  0013            1                         MOV     A,01100000B
+ 123  0013            1                         MOV [030H],A
+ 123  0013            1                         CLR [031H]
+ 123  0013            1                         ;-CLEAR BANK3 380H~2FFH
+ 123  0013            1                         MOV     A,3
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK2 280H~2FFH
+ 123  0013            1                         MOV     A,2
+文件：MAIN_PROGRAM_V102.asm 编译器版本 2.96 页次8
+
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK1 180H~1FFH
+ 123  0013            1                         MOV     A,1
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK0 080H~0FFH
+ 123  0013            1                         CLR [04H]
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                 endif
+ 123  0013            1 
+ 123  0013            1                 ;--------------------------------
+ 123  0013            1                 ;-INITIAL FOR BS84D20A  ---------
+ 123  0013            1                 ;--------------------------------
+ 123  0013            1                 ifdef   _BS84D20A_
+ 123  0013            1                         ;-SET SYSTEM CLOCK
+ 123  0013            1                         MOV     A,(( 2<<4)&00110000B)
+ 123  0013            1                         MOV [0CH],A          ;BIT7=FSYSON
+ 123  0013            1                         ;--                     ;BIT5:BIT4=00/11:8MHZ ; 01:12MHZ ; 10:16MHZ
+ 123  0013            1                         MOV     A,00000011B
+ 123  0013            1                         MOV [0BH],A
+ 123  0013            1                         ;-WDT INITIAL USE 125/500MS WHEN ENABLE POWER SAVE MODE
+ 123  0013            1                       ;;MOV     A,01010011B     ;500   MS
+ 123  0013            1                         MOV     A,01010010B     ;125   MS
+ 123  0013            1                         MOV [01AH],A
+ 123  0013            1                         ;-IF POWER SAVING MODE ENABLE
+ 123  0013            1                         if 0==1
+ 123  0013            1                         SZ [0AH].5
+ 123  0013            1                         JMP     WDT_WAKEUP      ;IF WAKEUP BY WDT TIME OUT
+ 123  0013            1                         endif
+ 123  0013            1                         ;-DISABLE ADC
+ 123  0013            1                         CLR [032H]
+ 123  0013            1                         MOV     A,01100000B
+ 123  0013            1                         MOV [030H],A
+ 123  0013            1                         CLR [031H]
+ 123  0013            1                         ;-CLEAR BANK5 580H~2FFH
+ 123  0013            1                         MOV     A,5
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK4 480H~2FFH
+ 123  0013            1                         MOV     A,4
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK3 380H~2FFH
+ 123  0013            1                         MOV     A,3
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK2 280H~2FFH
+ 123  0013            1                         MOV     A,2
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK1 180H~1FFH
+ 123  0013            1                         MOV     A,1
+文件：MAIN_PROGRAM_V102.asm 编译器版本 2.96 页次9
+
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK0 080H~0FFH
+ 123  0013            1                         CLR [04H]
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                 endif
+ 123  0013            1 
+ 123  0013            1                 ;--------------------------------
+ 123  0013            1                 ;-INITIAL FOR BS82B16   ---------
+ 123  0013            1                 ;--------------------------------
+ 123  0013            1                 ifdef   _BS82B16_
+ 123  0013            1                         ;-SET SYSTEM CLOCK
+ 123  0013            1                         MOV     A,(( 2<<4)^00110000B)&00110000B
+ 123  0013            1                         MOV [0CH],A
+ 123  0013            1                         ;--
+ 123  0013            1                         MOV     A,00000011B
+ 123  0013            1                         MOV [0BH],A
+ 123  0013            1                         ;-WDT INITIAL USE 125/500MS WHEN ENABLE POWER SAVE MODE
+ 123  0013            1                       ;;MOV     A,01010011B     ;500   MS
+ 123  0013            1                         MOV     A,01010010B     ;125   MS
+ 123  0013            1                         MOV [01AH],A
+ 123  0013            1 
+ 123  0013            1                         ;-IF POWER SAVING MODE ENABLE
+ 123  0013            1                         if 0==1
+ 123  0013            1                         SZ [0AH].5
+ 123  0013            1                         JMP     WDT_WAKEUP      ;IF WAKEUP BY WDT TIME OUT
+ 123  0013            1                         endif
+ 123  0013            1 
+ 123  0013            1                         ;-CLEAR BANK2 280H~2FFH
+ 123  0013            1                         MOV     A,2
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK1 180H~1FFH
+ 123  0013            1                         MOV     A,1
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK0 080H~0FFH
+ 123  0013            1                         CLR [04H]
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                 endif
+ 123  0013            1 
+ 123  0013            1                 ;--------------------------------
+ 123  0013            1                 ;-INITIAL FOR BS82B12A  ---------
+ 123  0013            1                 ;--------------------------------
+ 123  0013            1                 ifdef   _BS82B12A_
+ 123  0013            1                         ;-SET SYSTEM CLOCK
+ 123  0013            1                         MOV     A,(( 2<<4)&00110000B)
+ 123  0013            1                         MOV [0CH],A          ;BIT7=FSYSON
+ 123  0013            1                         ;--                     ;BIT5:BIT4=00/11:8MHZ ; 01:12MHZ ; 10:16MHZ
+ 123  0013            1                         MOV     A,00000011B
+ 123  0013            1                         MOV [0BH],A
+ 123  0013            1                         ;-WDT INITIAL USE 125/500MS WHEN ENABLE POWER SAVE MODE
+ 123  0013            1                       ;;MOV     A,01010011B     ;500   MS
+ 123  0013            1                         MOV     A,01010010B     ;125   MS
+ 123  0013            1                         MOV [01AH],A
+文件：MAIN_PROGRAM_V102.asm 编译器版本 2.96 页次10
+
+ 123  0013            1                         ;-IF POWER SAVING MODE ENABLE
+ 123  0013            1                         if 0==1
+ 123  0013            1                         SZ [0AH].5
+ 123  0013            1                         JMP     WDT_WAKEUP      ;IF WAKEUP BY WDT TIME OUT
+ 123  0013            1                         endif
+ 123  0013            1                         ;-CLEAR BANK2 280H~2FFH
+ 123  0013            1                         MOV     A,2
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK1 180H~1FFH
+ 123  0013            1                         MOV     A,1
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK0 080H~0FFH
+ 123  0013            1                         CLR [04H]
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                 endif
+ 123  0013            1 
+ 123  0013            1                 ;--------------------------------
+ 123  0013            1                 ;-INITIAL FOR BS82C16A  ---------
+ 123  0013            1                 ;--------------------------------
+ 123  0013            1                 ifdef   _BS82C16A_
+ 123  0013            1                         ;-SET SYSTEM CLOCK
+ 123  0013            1                         MOV     A,(( 2<<4)&00110000B)
+ 123  0013            1                         MOV [0CH],A          ;BIT7=FSYSON
+ 123  0013            1                         ;--                     ;BIT5:BIT4=00/11:8MHZ ; 01:12MHZ ; 10:16MHZ
+ 123  0013            1                         MOV     A,00000011B
+ 123  0013            1                         MOV [0BH],A
+ 123  0013            1                         ;-WDT INITIAL USE 125/500MS WHEN ENABLE POWER SAVE MODE
+ 123  0013            1                       ;;MOV     A,01010011B     ;500   MS
+ 123  0013            1                         MOV     A,01010010B     ;125   MS
+ 123  0013            1                         MOV [01AH],A
+ 123  0013            1                         ;-IF POWER SAVING MODE ENABLE
+ 123  0013            1                         if 0==1
+ 123  0013            1                         SZ [0AH].5
+ 123  0013            1                         JMP     WDT_WAKEUP      ;IF WAKEUP BY WDT TIME OUT
+ 123  0013            1                         endif
+ 123  0013            1                         ;-CLEAR BANK3 380H~2FFH
+ 123  0013            1                         MOV     A,3
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK2 280H~2FFH
+ 123  0013            1                         MOV     A,2
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK1 180H~1FFH
+ 123  0013            1                         MOV     A,1
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK0 080H~0FFH
+ 123  0013            1                         CLR [04H]
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                 endif
+文件：MAIN_PROGRAM_V102.asm 编译器版本 2.96 页次11
+
+ 123  0013            1 
+ 123  0013            1                 ;--------------------------------
+ 123  0013            1                 ;-INITIAL FOR BS82D20A  ---------
+ 123  0013            1                 ;--------------------------------
+ 123  0013            1                 ifdef   _BS82D20A_
+ 123  0013            1                         ;-SET SYSTEM CLOCK
+ 123  0013            1                         MOV     A,(( 2<<4)&00110000B)
+ 123  0013            1                         MOV [0CH],A          ;BIT7=FSYSON
+ 123  0013            1                         ;--                     ;BIT5:BIT4=00/11:8MHZ ; 01:12MHZ ; 10:16MHZ
+ 123  0013            1                         MOV     A,00000011B
+ 123  0013            1                         MOV [0BH],A
+ 123  0013            1                         ;-WDT INITIAL USE 125/500MS WHEN ENABLE POWER SAVE MODE
+ 123  0013            1                       ;;MOV     A,01010011B     ;500   MS
+ 123  0013            1                         MOV     A,01010010B     ;125   MS
+ 123  0013            1                         MOV [01AH],A
+ 123  0013            1                         ;-IF POWER SAVING MODE ENABLE
+ 123  0013            1                         if 0==1
+ 123  0013            1                         SZ [0AH].5
+ 123  0013            1                         JMP     WDT_WAKEUP      ;IF WAKEUP BY WDT TIME OUT
+ 123  0013            1                         endif
+ 123  0013            1                         ;-CLEAR BANK5 580H~2FFH
+ 123  0013            1                         MOV     A,5
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK4 480H~2FFH
+ 123  0013            1                         MOV     A,4
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK3 380H~2FFH
+ 123  0013            1                         MOV     A,3
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK2 280H~2FFH
+ 123  0013            1                         MOV     A,2
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK1 180H~1FFH
+ 123  0013            1                         MOV     A,1
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK0 080H~0FFH
+ 123  0013            1                         CLR [04H]
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                 endif
+ 123  0013            1                 ;--------------------------------
+ 123  0013            1                 ;-INITIAL FOR BS45FH21  ---------
+ 123  0013            1                 ;--------------------------------
+ 123  0013            1                 ifdef   _BS45FH21_
+ 123  0013            1 
+ 123  0013            1 
+ 123  0013            1                         ;CLR     SCC
+ 123  0013            1                         MOV     A,00011111B     ;FH=Fsys/1
+ 123  0013            1                         ANDM    A,SCC
+ 123  0013            1 
+文件：MAIN_PROGRAM_V102.asm 编译器版本 2.96 页次12
+
+ 123  0013            1                         ;-WDT INITIAL USE 125/500MS WHEN ENABLE POWER SAVE MODE
+ 123  0013            1                       ;;MOV     A,01010011B     ;500   MS
+ 123  0013            1                         MOV     A,01010010B     ;125   MS
+ 123  0013            1                         MOV [01AH],A
+ 123  0013            1                         ;-IF POWER SAVING MODE ENABLE
+ 123  0013            1                         if 0==1
+ 123  0013            1                         SZ [0AH].5
+ 123  0013            1                         JMP     WDT_WAKEUP      ;IF WAKEUP BY WDT TIME OUT
+ 123  0013            1                         endif
+ 123  0013            1                         ;-CLEAR BANK7 780H~7FFH
+ 123  0013            1                         MOV     A,7
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK5 680H~6FFH
+ 123  0013            1                         MOV     A,6
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK5 580H~2FFH
+ 123  0013            1                         MOV     A,5
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK4 480H~2FFH
+ 123  0013            1                         MOV     A,4
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK3 380H~2FFH
+ 123  0013            1                         MOV     A,3
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK2 280H~2FFH
+ 123  0013            1                         MOV     A,2
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK1 180H~1FFH
+ 123  0013            1                         MOV     A,1
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK0 080H~0FFH
+ 123  0013            1                         CLR [04H]
+ 123  0013            1                         MOV     A,60H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                 endif
+ 123  0013            1 
+ 123  0013            1               ;--------------------------------
+ 123  0013            1                 ;-INITIAL FOR BS66F340  ---------
+ 123  0013            1                 ;--------------------------------
+ 123  0013            1                 ifdef   _BS66F340_
+ 123  0013            1 
+ 123  0013            1                         ;CLR     SCC
+ 123  0013            1                         MOV     A,00011111B     ;FH=Fsys/1
+ 123  0013            1                         ANDM    A,SCC
+ 123  0013            1 
+ 123  0013            1                         MOV     A,(( 2<<2)&00001100B)|00000001B
+文件：MAIN_PROGRAM_V102.asm 编译器版本 2.96 页次13
+
+ 123  0013            1                         MOV     HIRCC,A
+ 123  0013            1 
+ 123  0013            1                         ;-WDT INITIAL USE 125/500MS WHEN ENABLE POWER SAVE MODE
+ 123  0013            1                       ;;MOV     A,01010011B     ;500   MS
+ 123  0013            1                         MOV     A,01010010B     ;125   MS
+ 123  0013            1                         MOV [01AH],A
+ 123  0013            1                         ;-IF POWER SAVING MODE ENABLE
+ 123  0013            1                         if 0==1
+ 123  0013            1                         SZ [0AH].5
+ 123  0013            1                         JMP     WDT_WAKEUP      ;IF WAKEUP BY WDT TIME OUT
+ 123  0013            1                         endif
+ 123  0013            1 
+ 123  0013            1                         ;-CLEAR BANK3 380H~2FFH
+ 123  0013            1                         MOV     A,3
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK2 280H~2FFH
+ 123  0013            1                         MOV     A,2
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK1 180H~1FFH
+ 123  0013            1                         MOV     A,1
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK0 080H~0FFH
+ 123  0013            1                         CLR [04H]
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                 endif
+ 123  0013            1 
+ 123  0013            1                 ;--------------------------------
+ 123  0013            1                 ;-INITIAL FOR BS66F350  ---------
+ 123  0013            1                 ;--------------------------------
+ 123  0013            1                 ifdef   _BS66F350_
+ 123  0013            1 
+ 123  0013            1                         ;CLR     SCC
+ 123  0013            1                         MOV     A,00011111B     ;FH=Fsys/1
+ 123  0013            1                         ANDM    A,SCC
+ 123  0013            1 
+ 123  0013            1                         MOV     A,(( 2<<2)&00001100B)|00000001B
+ 123  0013            1                         MOV     HIRCC,A
+ 123  0013            1 
+ 123  0013            1                         ;-WDT INITIAL USE 125/500MS WHEN ENABLE POWER SAVE MODE
+ 123  0013            1                       ;;MOV     A,01010011B     ;500   MS
+ 123  0013            1                         MOV     A,01010010B     ;125   MS
+ 123  0013            1                         MOV [01AH],A
+ 123  0013            1                         ;-IF POWER SAVING MODE ENABLE
+ 123  0013            1                         if 0==1
+ 123  0013            1                         SZ [0AH].5
+ 123  0013            1                         JMP     WDT_WAKEUP      ;IF WAKEUP BY WDT TIME OUT
+ 123  0013            1                         endif
+ 123  0013            1 
+ 123  0013            1                         ;-CLEAR BANK5 580H~2FFH
+ 123  0013            1                         MOV     A,5
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+文件：MAIN_PROGRAM_V102.asm 编译器版本 2.96 页次14
+
+ 123  0013            1                         ;-CLEAR BANK4 480H~2FFH
+ 123  0013            1                         MOV     A,4
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK3 380H~2FFH
+ 123  0013            1                         MOV     A,3
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK2 280H~2FFH
+ 123  0013            1                         MOV     A,2
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK1 180H~1FFH
+ 123  0013            1                         MOV     A,1
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK0 080H~0FFH
+ 123  0013            1                         CLR [04H]
+ 123  0013            1                         MOV     A,60H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                 endif
+ 123  0013            1 
+ 123  0013            1                 ;--------------------------------
+ 123  0013            1                 ;-INITIAL FOR BS66F360  ---------
+ 123  0013            1                 ;--------------------------------
+ 123  0013            1                 ifdef   _BS66F360_
+ 123  0013            1 
+ 123  0013            1                         ;CLR     SCC
+ 123  0013            1                         MOV     A,00011111B     ;FH=Fsys/1
+ 123  0013            1                         ANDM    A,SCC
+ 123  0013            1 
+ 123  0013            1                         MOV     A,(( 2<<2)&00001100B)|00000001B
+ 123  0013            1                         MOV     HIRCC,A
+ 123  0013            1 
+ 123  0013            1                         ;-WDT INITIAL USE 125/500MS WHEN ENABLE POWER SAVE MODE
+ 123  0013            1                       ;;MOV     A,01010011B     ;500   MS
+ 123  0013            1                         MOV     A,01010010B     ;125   MS
+ 123  0013            1                         MOV [01AH],A
+ 123  0013            1                         ;-IF POWER SAVING MODE ENABLE
+ 123  0013            1                         if 0==1
+ 123  0013            1                         SZ [0AH].5
+ 123  0013            1                         JMP     WDT_WAKEUP      ;IF WAKEUP BY WDT TIME OUT
+ 123  0013            1                         endif
+ 123  0013            1                         ;-CLEAR BANK7 780H~7FFH
+ 123  0013            1                         MOV     A,7
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK5 680H~6FFH
+ 123  0013            1                         MOV     A,6
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK5 580H~2FFH
+ 123  0013            1                         MOV     A,5
+ 123  0013            1                         MOV [04H],A
+文件：MAIN_PROGRAM_V102.asm 编译器版本 2.96 页次15
+
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK4 480H~2FFH
+ 123  0013            1                         MOV     A,4
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK3 380H~2FFH
+ 123  0013            1                         MOV     A,3
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK2 280H~2FFH
+ 123  0013            1                         MOV     A,2
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK1 180H~1FFH
+ 123  0013            1                         MOV     A,1
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK0 080H~0FFH
+ 123  0013            1                         CLR [04H]
+ 123  0013            1                         MOV     A,60H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                 endif
+ 123  0013            1 
+ 123  0013            1                 ;--------------------------------
+ 123  0013            1                 ;-INITIAL FOR BS67F340  ---------
+ 123  0013            1                 ;--------------------------------
+ 123  0013            1                 ifdef   _BS67F340_
+ 123  0013            1 
+ 123  0013            1                         ;CLR     SCC
+ 123  0013            1                         MOV     A,00011111B     ;FH=Fsys/1
+ 123  0013            1                         ANDM    A,SCC
+ 123  0013            1 
+ 123  0013            1                         MOV     A,(( 2<<2)&00001100B)|00000001B
+ 123  0013            1                         MOV     HIRCC,A
+ 123  0013            1 
+ 123  0013            1                         ;-WDT INITIAL USE 125/500MS WHEN ENABLE POWER SAVE MODE
+ 123  0013            1                       ;;MOV     A,01010011B     ;500   MS
+ 123  0013            1                         MOV     A,01010010B     ;125   MS
+ 123  0013            1                         MOV [01AH],A
+ 123  0013            1                         ;-IF POWER SAVING MODE ENABLE
+ 123  0013            1                         if 0==1
+ 123  0013            1                         SZ [0AH].5
+ 123  0013            1                         JMP     WDT_WAKEUP      ;IF WAKEUP BY WDT TIME OUT
+ 123  0013            1                         endif
+ 123  0013            1                         ;-CLEAR BANK3 380H~2FFH
+ 123  0013            1                         MOV     A,3
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK2 280H~2FFH
+ 123  0013            1                         MOV     A,2
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK1 180H~1FFH
+文件：MAIN_PROGRAM_V102.asm 编译器版本 2.96 页次16
+
+ 123  0013            1                         MOV     A,1
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK0 080H~0FFH
+ 123  0013            1                         CLR [04H]
+ 123  0013            1                         MOV     A,60H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                 endif
+ 123  0013            1 
+ 123  0013            1                 ;--------------------------------
+ 123  0013            1                 ;-INITIAL FOR BS67F350  ---------
+ 123  0013            1                 ;--------------------------------
+ 123  0013            1                 ifdef   _BS67F350_
+ 123  0013            1 
+ 123  0013            1                         ;CLR     SCC
+ 123  0013            1                         MOV     A,00011111B     ;FH=Fsys/1
+ 123  0013            1                         ANDM    A,SCC
+ 123  0013            1 
+ 123  0013            1                         MOV     A,(( 2<<2)&00001100B)|00000001B
+ 123  0013            1                         MOV     HIRCC,A
+ 123  0013            1 
+ 123  0013            1                         ;-WDT INITIAL USE 125/500MS WHEN ENABLE POWER SAVE MODE
+ 123  0013            1                       ;;MOV     A,01010011B     ;500   MS
+ 123  0013            1                         MOV     A,01010010B     ;125   MS
+ 123  0013            1                         MOV [01AH],A
+ 123  0013            1                         ;-IF POWER SAVING MODE ENABLE
+ 123  0013            1                         if 0==1
+ 123  0013            1                         SZ [0AH].5
+ 123  0013            1                         JMP     WDT_WAKEUP      ;IF WAKEUP BY WDT TIME OUT
+ 123  0013            1                         endif
+ 123  0013            1                         ;-CLEAR BANK5 580H~2FFH
+ 123  0013            1                         MOV     A,5
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK4 480H~2FFH
+ 123  0013            1                         MOV     A,4
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK3 380H~2FFH
+ 123  0013            1                         MOV     A,3
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK2 280H~2FFH
+ 123  0013            1                         MOV     A,2
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK1 180H~1FFH
+ 123  0013            1                         MOV     A,1
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK0 080H~0FFH
+ 123  0013            1                         CLR [04H]
+ 123  0013            1                         MOV     A,60H
+ 123  0013            1                         CALL    CLEAR_RAM
+文件：MAIN_PROGRAM_V102.asm 编译器版本 2.96 页次17
+
+ 123  0013            1                 endif
+ 123  0013            1 
+ 123  0013            1                 ;--------------------------------
+ 123  0013            1                 ;-INITIAL FOR BS67F360  ---------
+ 123  0013            1                 ;--------------------------------
+ 123  0013            1                 ifdef   _BS67F360_
+ 123  0013            1 
+ 123  0013            1                         ;CLR     SCC
+ 123  0013            1                         MOV     A,00011111B     ;FH=Fsys/1
+ 123  0013            1                         ANDM    A,SCC
+ 123  0013            1 
+ 123  0013            1                         MOV     A,(( 2<<2)&00001100B)|00000001B
+ 123  0013            1                         MOV     HIRCC,A
+ 123  0013            1 
+ 123  0013            1                         ;-WDT INITIAL USE 125/500MS WHEN ENABLE POWER SAVE MODE
+ 123  0013            1                       ;;MOV     A,01010011B     ;500   MS
+ 123  0013            1                         MOV     A,01010010B     ;125   MS
+ 123  0013            1                         MOV [01AH],A
+ 123  0013            1                         ;-IF POWER SAVING MODE ENABLE
+ 123  0013            1                         if 0==1
+ 123  0013            1                         SZ [0AH].5
+ 123  0013            1                         JMP     WDT_WAKEUP      ;IF WAKEUP BY WDT TIME OUT
+ 123  0013            1                         endif
+ 123  0013            1                         ;-CLEAR BANK7 780H~7FFH
+ 123  0013            1                         MOV     A,7
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK5 680H~6FFH
+ 123  0013            1                         MOV     A,6
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK5 580H~2FFH
+ 123  0013            1                         MOV     A,5
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK4 480H~2FFH
+ 123  0013            1                         MOV     A,4
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK3 380H~2FFH
+ 123  0013            1                         MOV     A,3
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK2 280H~2FFH
+ 123  0013            1                         MOV     A,2
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK1 180H~1FFH
+ 123  0013            1                         MOV     A,1
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK0 080H~0FFH
+ 123  0013            1                         CLR [04H]
+文件：MAIN_PROGRAM_V102.asm 编译器版本 2.96 页次18
+
+ 123  0013            1                         MOV     A,60H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                 endif
+ 123  0013            1 
+ 123  0013            1                 ;--
+ 123  0013            1 
+ 123  0013            1                 ;--------------------------------
+ 123  0013            1                 ;-INITIAL FOR BS66FV340  ---------
+ 123  0013            1                 ;--------------------------------
+ 123  0013            1                 ifdef   _BS66FV340_
+ 123  0013            1 
+ 123  0013            1                         ;CLR     SCC
+ 123  0013            1                         MOV     A,00011111B     ;FH=Fsys/1
+ 123  0013            1                         ANDM    A,SCC
+ 123  0013            1 
+ 123  0013            1                         MOV     A,(( 2<<2)&00001100B)|00000001B
+ 123  0013            1                         MOV     HIRCC,A
+ 123  0013            1 
+ 123  0013            1                         ;-WDT INITIAL USE 125/500MS WHEN ENABLE POWER SAVE MODE
+ 123  0013            1                       ;;MOV     A,01010011B     ;500   MS
+ 123  0013            1                         MOV     A,01010010B     ;125   MS
+ 123  0013            1                         MOV [01AH],A
+ 123  0013            1                         ;-IF POWER SAVING MODE ENABLE
+ 123  0013            1                         if 0==1
+ 123  0013            1                         SZ [0AH].5
+ 123  0013            1                         JMP     WDT_WAKEUP      ;IF WAKEUP BY WDT TIME OUT
+ 123  0013            1                         endif
+ 123  0013            1                         ;;;;;;-CLEAR BANK7 780H~7FFH
+ 123  0013            1                         ;;;;;MOV     A,7
+ 123  0013            1                         ;;;;;MOV     BP,A
+ 123  0013            1                         ;;;;;MOV     A,80H
+ 123  0013            1                         ;;;;;CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK5 680H~6FFH
+ 123  0013            1                         MOV     A,6
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK5 580H~2FFH
+ 123  0013            1                         MOV     A,5
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;;;;;;-CLEAR BANK4 480H~2FFH
+ 123  0013            1                         ;;;;;MOV     A,4
+ 123  0013            1                         ;;;;;MOV     BP,A
+ 123  0013            1                         ;;;;;MOV     A,80H
+ 123  0013            1                         ;;;;;CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK3 380H~2FFH
+ 123  0013            1                         MOV     A,3
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK2 280H~2FFH
+ 123  0013            1                         MOV     A,2
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK1 180H~1FFH
+ 123  0013            1                         MOV     A,1
+ 123  0013            1                         MOV [04H],A
+文件：MAIN_PROGRAM_V102.asm 编译器版本 2.96 页次19
+
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK0 080H~0FFH
+ 123  0013            1                         CLR [04H]
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                 endif
+ 123  0013            1 
+ 123  0013            1 
+ 123  0013            1                 ;--------------------------------
+ 123  0013            1                 ;-INITIAL FOR BS66FV350  ---------
+ 123  0013            1                 ;--------------------------------
+ 123  0013            1                 ifdef   _BS66FV350_
+ 123  0013            1 
+ 123  0013            1                         ;CLR     SCC
+ 123  0013            1                         MOV     A,00011111B     ;FH=Fsys/1
+ 123  0013            1                         ANDM    A,SCC
+ 123  0013            1 
+ 123  0013            1                         MOV     A,(( 2<<2)&00001100B)|00000001B
+ 123  0013            1                         MOV     HIRCC,A
+ 123  0013            1 
+ 123  0013            1                         ;-WDT INITIAL USE 125/500MS WHEN ENABLE POWER SAVE MODE
+ 123  0013            1                       ;;MOV     A,01010011B     ;500   MS
+ 123  0013            1                         MOV     A,01010010B     ;125   MS
+ 123  0013            1                         MOV [01AH],A
+ 123  0013            1                         ;-IF POWER SAVING MODE ENABLE
+ 123  0013            1                         if 0==1
+ 123  0013            1                         SZ [0AH].5
+ 123  0013            1                         JMP     WDT_WAKEUP      ;IF WAKEUP BY WDT TIME OUT
+ 123  0013            1                         endif
+ 123  0013            1                         ;;;;;;-CLEAR BANK7 780H~7FFH
+ 123  0013            1                         ;;;;;MOV     A,7
+ 123  0013            1                         ;;;;;MOV     BP,A
+ 123  0013            1                         ;;;;;MOV     A,80H
+ 123  0013            1                         ;;;;;CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK5 680H~6FFH
+ 123  0013            1                         MOV     A,6
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK5 580H~2FFH
+ 123  0013            1                         MOV     A,5
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK4 480H~2FFH
+ 123  0013            1                         MOV     A,4
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK3 380H~2FFH
+ 123  0013            1                         MOV     A,3
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK2 280H~2FFH
+ 123  0013            1                         MOV     A,2
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+文件：MAIN_PROGRAM_V102.asm 编译器版本 2.96 页次20
+
+ 123  0013            1                         ;-CLEAR BANK1 180H~1FFH
+ 123  0013            1                         MOV     A,1
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK0 080H~0FFH
+ 123  0013            1                         CLR [04H]
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                 endif
+ 123  0013            1 
+ 123  0013            1                 ;--------------------------------
+ 123  0013            1                 ;-INITIAL FOR BS66FV360  ---------
+ 123  0013            1                 ;--------------------------------
+ 123  0013            1                 ifdef   _BS66FV360_
+ 123  0013            1 
+ 123  0013            1                         ;CLR     SCC
+ 123  0013            1                         MOV     A,00011111B     ;FH=Fsys/1
+ 123  0013            1                         ANDM    A,SCC
+ 123  0013            1 
+ 123  0013            1                         MOV     A,(( 2<<2)&00001100B)|00000001B
+ 123  0013            1                         MOV     HIRCC,A
+ 123  0013            1 
+ 123  0013            1                         ;-WDT INITIAL USE 125/500MS WHEN ENABLE POWER SAVE MODE
+ 123  0013            1                       ;;MOV     A,01010011B     ;500   MS
+ 123  0013            1                         MOV     A,01010010B     ;125   MS
+ 123  0013            1                         MOV [01AH],A
+ 123  0013            1                         ;-IF POWER SAVING MODE ENABLE
+ 123  0013            1                         if 0==1
+ 123  0013            1                         SZ [0AH].5
+ 123  0013            1                         JMP     WDT_WAKEUP      ;IF WAKEUP BY WDT TIME OUT
+ 123  0013            1                         endif
+ 123  0013            1                         ;-CLEAR BANK7 780H~7FFH
+ 123  0013            1                         MOV     A,7
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK5 680H~6FFH
+ 123  0013            1                         MOV     A,6
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK5 580H~2FFH
+ 123  0013            1                         MOV     A,5
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK4 480H~2FFH
+ 123  0013            1                         MOV     A,4
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK3 380H~2FFH
+ 123  0013            1                         MOV     A,3
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK2 280H~2FFH
+ 123  0013            1                         MOV     A,2
+ 123  0013            1                         MOV [04H],A
+文件：MAIN_PROGRAM_V102.asm 编译器版本 2.96 页次21
+
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK1 180H~1FFH
+ 123  0013            1                         MOV     A,1
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK0 080H~0FFH
+ 123  0013            1                         CLR [04H]
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                 endif
+ 123  0013            1 
+ 123  0013            1                 ;--------------------------------
+ 123  0013            1                 ;-INITIAL FOR BS86B12A  ---------
+ 123  0013            1                 ;--------------------------------
+ 123  0013            1                 ifdef   _BS86B12A_
+ 123  0013            1                         ;-SET SYSTEM CLOCK
+ 123  0013            1                         MOV     A,(( 2<<4)&00110000B)
+ 123  0013            1                         MOV [0CH],A          ;BIT7=FSYSON
+ 123  0013            1                         ;--                     ;BIT5:BIT4=00/11:8MHZ ; 01:12MHZ ; 10:16MHZ
+ 123  0013            1                         MOV     A,00000011B
+ 123  0013            1                         MOV [0BH],A
+ 123  0013            1                         ;-WDT INITIAL USE 125/500MS WHEN ENABLE POWER SAVE MODE
+ 123  0013            1                       ;;MOV     A,01010011B     ;500   MS
+ 123  0013            1                         MOV     A,01010010B     ;125   MS
+ 123  0013            1                         MOV [01AH],A
+ 123  0013            1                         ;-IF POWER SAVING MODE ENABLE
+ 123  0013            1                         if 0==1
+ 123  0013            1                         SZ [0AH].5
+ 123  0013            1                         JMP     WDT_WAKEUP      ;IF WAKEUP BY WDT TIME OUT
+ 123  0013            1                         endif
+ 123  0013            1                         ;-DISABLE ADC
+ 123  0013            1                         CLR [032H]
+ 123  0013            1                         MOV     A,01100000B
+ 123  0013            1                         MOV [030H],A
+ 123  0013            1                         CLR [031H]
+ 123  0013            1                       ;;;-CLEAR BANK3 380H~2FFH
+ 123  0013            1                       ;;MOV     A,3
+ 123  0013            1                       ;;MOV     BP,A
+ 123  0013            1                       ;;MOV     A,80H
+ 123  0013            1                       ;;CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK2 280H~2FFH
+ 123  0013            1                         MOV     A,2
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK1 180H~1FFH
+ 123  0013            1                         MOV     A,1
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK0 080H~0FFH
+ 123  0013            1                         CLR [04H]
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                 endif
+ 123  0013            1 
+ 123  0013            1                 ;--------------------------------
+ 123  0013            1                 ;-INITIAL FOR BS86C16A  ---------
+文件：MAIN_PROGRAM_V102.asm 编译器版本 2.96 页次22
+
+ 123  0013            1                 ;--------------------------------
+ 123  0013            1                 ifdef   _BS86C16A_
+ 123  0013            1                         ;-SET SYSTEM CLOCK
+ 123  0013            1                         MOV     A,(( 2<<4)&00110000B)
+ 123  0013            1                         MOV [0CH],A          ;BIT7=FSYSON
+ 123  0013            1                         ;--                     ;BIT5:BIT4=00/11:8MHZ ; 01:12MHZ ; 10:16MHZ
+ 123  0013            1                         MOV     A,00000011B
+ 123  0013            1                         MOV [0BH],A
+ 123  0013            1                         ;-WDT INITIAL USE 125/500MS WHEN ENABLE POWER SAVE MODE
+ 123  0013            1                       ;;MOV     A,01010011B     ;500   MS
+ 123  0013            1                         MOV     A,01010010B     ;125   MS
+ 123  0013            1                         MOV [01AH],A
+ 123  0013            1                         ;-IF POWER SAVING MODE ENABLE
+ 123  0013            1                         if 0==1
+ 123  0013            1                         SZ [0AH].5
+ 123  0013            1                         JMP     WDT_WAKEUP      ;IF WAKEUP BY WDT TIME OUT
+ 123  0013            1                         endif
+ 123  0013            1                         ;-DISABLE ADC
+ 123  0013            1                         CLR [032H]
+ 123  0013            1                         MOV     A,01100000B
+ 123  0013            1                         MOV [030H],A
+ 123  0013            1                         CLR [031H]
+ 123  0013            1                         ;-CLEAR BANK3 380H~2FFH
+ 123  0013            1                         MOV     A,3
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK2 280H~2FFH
+ 123  0013            1                         MOV     A,2
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK1 180H~1FFH
+ 123  0013            1                         MOV     A,1
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK0 080H~0FFH
+ 123  0013            1                         CLR [04H]
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                 endif
+ 123  0013            1 
+ 123  0013            1                 ;--------------------------------
+ 123  0013            1                 ;-INITIAL FOR BS86D20A  ---------
+ 123  0013            1                 ;--------------------------------
+ 123  0013            1                 ifdef   _BS86D20A_
+ 123  0013            1                         ;-SET SYSTEM CLOCK
+ 123  0013            1                         MOV     A,(( 2<<4)&00110000B)
+ 123  0013            1                         MOV [0CH],A          ;BIT7=FSYSON
+ 123  0013            1                         ;--                     ;BIT5:BIT4=00/11:8MHZ ; 01:12MHZ ; 10:16MHZ
+ 123  0013            1                         MOV     A,00000011B
+ 123  0013            1                         MOV [0BH],A
+ 123  0013            1                         ;-WDT INITIAL USE 125/500MS WHEN ENABLE POWER SAVE MODE
+ 123  0013            1                       ;;MOV     A,01010011B     ;500   MS
+ 123  0013            1                         MOV     A,01010010B     ;125   MS
+ 123  0013            1                         MOV [01AH],A
+ 123  0013            1                         ;-IF POWER SAVING MODE ENABLE
+ 123  0013            1                         if 0==1
+ 123  0013            1                         SZ [0AH].5
+文件：MAIN_PROGRAM_V102.asm 编译器版本 2.96 页次23
+
+ 123  0013            1                         JMP     WDT_WAKEUP      ;IF WAKEUP BY WDT TIME OUT
+ 123  0013            1                         endif
+ 123  0013            1                         ;-DISABLE ADC
+ 123  0013            1                         CLR [032H]
+ 123  0013            1                         MOV     A,01100000B
+ 123  0013            1                         MOV [030H],A
+ 123  0013            1                         CLR [031H]
+ 123  0013            1                         ;-CLEAR BANK5 580H~2FFH
+ 123  0013            1                         MOV     A,5
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK4 480H~2FFH
+ 123  0013            1                         MOV     A,4
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK3 380H~2FFH
+ 123  0013            1                         MOV     A,3
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK2 280H~2FFH
+ 123  0013            1                         MOV     A,2
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK1 180H~1FFH
+ 123  0013            1                         MOV     A,1
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK0 080H~0FFH
+ 123  0013            1                         CLR [04H]
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                 endif
+ 123  0013            1 
+ 123  0013            1 
+ 123  0013            1                 ;--------------------------------
+ 123  0013            1                 ;-INITIAL FOR BS87C16A  ---------
+ 123  0013            1                 ;--------------------------------
+ 123  0013            1                 ifdef   _BS87C16A_
+ 123  0013            1                         ;-SET SYSTEM CLOCK
+ 123  0013            1                         MOV     A,(( 2<<4)&00110000B)
+ 123  0013            1                         MOV [0CH],A          ;BIT7=FSYSON
+ 123  0013            1                         ;--                     ;BIT5:BIT4=00/11:8MHZ ; 01:12MHZ ; 10:16MHZ
+ 123  0013            1                         MOV     A,00000011B
+ 123  0013            1                         MOV [0BH],A
+ 123  0013            1                         ;-WDT INITIAL USE 125/500MS WHEN ENABLE POWER SAVE MODE
+ 123  0013            1                       ;;MOV     A,01010011B     ;500   MS
+ 123  0013            1                         MOV     A,01010010B     ;125   MS
+ 123  0013            1                         MOV [01AH],A
+ 123  0013            1                         ;-IF POWER SAVING MODE ENABLE
+ 123  0013            1                         if 0==1
+ 123  0013            1                         SZ [0AH].5
+ 123  0013            1                         JMP     WDT_WAKEUP      ;IF WAKEUP BY WDT TIME OUT
+ 123  0013            1                         endif
+ 123  0013            1                         ;-DISABLE ADC
+ 123  0013            1                         CLR [032H]
+文件：MAIN_PROGRAM_V102.asm 编译器版本 2.96 页次24
+
+ 123  0013            1                         MOV     A,01100000B
+ 123  0013            1                         MOV [030H],A
+ 123  0013            1                         CLR [031H]
+ 123  0013            1                         ;-CLEAR BANK3 380H~2FFH
+ 123  0013            1                         MOV     A,3
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK2 280H~2FFH
+ 123  0013            1                         MOV     A,2
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK1 180H~1FFH
+ 123  0013            1                         MOV     A,1
+ 123  0013            1                         MOV [04H],A
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                         ;-CLEAR BANK0 080H~0FFH
+ 123  0013            1                         CLR [04H]
+ 123  0013            1                         MOV     A,80H
+ 123  0013            1                         CALL    CLEAR_RAM
+ 123  0013            1                 endif
+ 123  0013            1 
+ 123  0013            1 
+ 123  0013            1 
+ 124  0013              
+ 125  0013                              ;------------------------------
+ 126  0013                              ;-LOAD LIBRARY OPTION/THRESHOLD
+ 127  0013                              ;------------------------------
+ 128  0013  2000     R                  CALL    _LOAD_TKS_GLOBE_VARIES
+ 129  0014              
+ 130  0014                              ;------------------------
+ 131  0014                              ;-EXTEND FUNCTION INITIAL
+ 132  0014                              ;------------------------
+ 133  0014                              EXTEND_FUNCTION_INITIAL
+ 133  0014            1                 CALL_   EXTEND_FUNCTION_1A_INITIAL
+ 133  0014            2         ifdef EXTEND_FUNCTION_1A_INITIAL
+ 133  0014            2                 ifdef   PBP
+ 133  0014            2                 MOV     A,bank _BS84B06A_LIBV413_INITIAL
+ 133  0014            2                 MOV     PBP,A
+ 133  0014            2                 endif
+ 133  0014  2000     E2                 CALL _BS84B06A_LIBV413_INITIAL
+ 133  0015            2         endif
+ 133  0015            1                 CALL_   EXTEND_FUNCTION_1B_INITIAL
+ 133  0015            2         ifdef EXTEND_FUNCTION_1B_INITIAL
+ 133  0015            2                 ifdef   PBP
+ 133  0015            2                 MOV     A,bank EXTEND_FUNCTION_1B_INITIAL
+ 133  0015            2                 MOV     PBP,A
+ 133  0015            2                 endif
+ 133  0015            2                 CALL EXTEND_FUNCTION_1B_INITIAL
+ 133  0015            2         endif
+ 133  0015            1                 CALL_   EXTEND_FUNCTION_1C_INITIAL
+ 133  0015            2         ifdef EXTEND_FUNCTION_1C_INITIAL
+ 133  0015            2                 ifdef   PBP
+ 133  0015            2                 MOV     A,bank EXTEND_FUNCTION_1C_INITIAL
+ 133  0015            2                 MOV     PBP,A
+ 133  0015            2                 endif
+ 133  0015            2                 CALL EXTEND_FUNCTION_1C_INITIAL
+ 133  0015            2         endif
+文件：MAIN_PROGRAM_V102.asm 编译器版本 2.96 页次25
+
+ 133  0015            1                 CALL_   EXTEND_FUNCTION_1D_INITIAL
+ 133  0015            2         ifdef EXTEND_FUNCTION_1D_INITIAL
+ 133  0015            2                 ifdef   PBP
+ 133  0015            2                 MOV     A,bank _USER_PROGRAM_INITIAL
+ 133  0015            2                 MOV     PBP,A
+ 133  0015            2                 endif
+ 133  0015  2000     E2                 CALL _USER_PROGRAM_INITIAL
+ 133  0016            2         endif
+ 133  0016            1                 CALL_   EXTEND_FUNCTION_1E_INITIAL
+ 133  0016            2         ifdef EXTEND_FUNCTION_1E_INITIAL
+ 133  0016            2                 ifdef   PBP
+ 133  0016            2                 MOV     A,bank EXTEND_FUNCTION_1E_INITIAL
+ 133  0016            2                 MOV     PBP,A
+ 133  0016            2                 endif
+ 133  0016            2                 CALL EXTEND_FUNCTION_1E_INITIAL
+ 133  0016            2         endif
+ 133  0016            1                 CALL_   EXTEND_FUNCTION_1F_INITIAL
+ 133  0016            2         ifdef EXTEND_FUNCTION_1F_INITIAL
+ 133  0016            2                 ifdef   PBP
+ 133  0016            2                 MOV     A,bank EXTEND_FUNCTION_1F_INITIAL
+ 133  0016            2                 MOV     PBP,A
+ 133  0016            2                 endif
+ 133  0016            2                 CALL EXTEND_FUNCTION_1F_INITIAL
+ 133  0016            2         endif
+ 133  0016            1                 CALL_   EXTEND_FUNCTION_1G_INITIAL
+ 133  0016            2         ifdef EXTEND_FUNCTION_1G_INITIAL
+ 133  0016            2                 ifdef   PBP
+ 133  0016            2                 MOV     A,bank EXTEND_FUNCTION_1G_INITIAL
+ 133  0016            2                 MOV     PBP,A
+ 133  0016            2                 endif
+ 133  0016            2                 CALL EXTEND_FUNCTION_1G_INITIAL
+ 133  0016            2         endif
+ 133  0016            1                 CALL_   EXTEND_FUNCTION_1H_INITIAL
+ 133  0016            2         ifdef EXTEND_FUNCTION_1H_INITIAL
+ 133  0016            2                 ifdef   PBP
+ 133  0016            2                 MOV     A,bank EXTEND_FUNCTION_1H_INITIAL
+ 133  0016            2                 MOV     PBP,A
+ 133  0016            2                 endif
+ 133  0016            2                 CALL EXTEND_FUNCTION_1H_INITIAL
+ 133  0016            2         endif
+ 133  0016            1 
+ 133  0016            1                 CALL_   EXTEND_FUNCTION_2A_INITIAL
+ 133  0016            2         ifdef EXTEND_FUNCTION_2A_INITIAL
+ 133  0016            2                 ifdef   PBP
+ 133  0016            2                 MOV     A,bank EXTEND_FUNCTION_2A_INITIAL
+ 133  0016            2                 MOV     PBP,A
+ 133  0016            2                 endif
+ 133  0016            2                 CALL EXTEND_FUNCTION_2A_INITIAL
+ 133  0016            2         endif
+ 133  0016            1                 CALL_   EXTEND_FUNCTION_2B_INITIAL
+ 133  0016            2         ifdef EXTEND_FUNCTION_2B_INITIAL
+ 133  0016            2                 ifdef   PBP
+ 133  0016            2                 MOV     A,bank EXTEND_FUNCTION_2B_INITIAL
+ 133  0016            2                 MOV     PBP,A
+ 133  0016            2                 endif
+ 133  0016            2                 CALL EXTEND_FUNCTION_2B_INITIAL
+ 133  0016            2         endif
+ 133  0016            1                 CALL_   EXTEND_FUNCTION_2C_INITIAL
+ 133  0016            2         ifdef EXTEND_FUNCTION_2C_INITIAL
+ 133  0016            2                 ifdef   PBP
+文件：MAIN_PROGRAM_V102.asm 编译器版本 2.96 页次26
+
+ 133  0016            2                 MOV     A,bank EXTEND_FUNCTION_2C_INITIAL
+ 133  0016            2                 MOV     PBP,A
+ 133  0016            2                 endif
+ 133  0016            2                 CALL EXTEND_FUNCTION_2C_INITIAL
+ 133  0016            2         endif
+ 133  0016            1                 CALL_   EXTEND_FUNCTION_2D_INITIAL
+ 133  0016            2         ifdef EXTEND_FUNCTION_2D_INITIAL
+ 133  0016            2                 ifdef   PBP
+ 133  0016            2                 MOV     A,bank EXTEND_FUNCTION_2D_INITIAL
+ 133  0016            2                 MOV     PBP,A
+ 133  0016            2                 endif
+ 133  0016            2                 CALL EXTEND_FUNCTION_2D_INITIAL
+ 133  0016            2         endif
+ 133  0016            1                 CALL_   EXTEND_FUNCTION_2E_INITIAL
+ 133  0016            2         ifdef EXTEND_FUNCTION_2E_INITIAL
+ 133  0016            2                 ifdef   PBP
+ 133  0016            2                 MOV     A,bank EXTEND_FUNCTION_2E_INITIAL
+ 133  0016            2                 MOV     PBP,A
+ 133  0016            2                 endif
+ 133  0016            2                 CALL EXTEND_FUNCTION_2E_INITIAL
+ 133  0016            2         endif
+ 133  0016            1                 CALL_   EXTEND_FUNCTION_2F_INITIAL
+ 133  0016            2         ifdef EXTEND_FUNCTION_2F_INITIAL
+ 133  0016            2                 ifdef   PBP
+ 133  0016            2                 MOV     A,bank EXTEND_FUNCTION_2F_INITIAL
+ 133  0016            2                 MOV     PBP,A
+ 133  0016            2                 endif
+ 133  0016            2                 CALL EXTEND_FUNCTION_2F_INITIAL
+ 133  0016            2         endif
+ 133  0016            1                 CALL_   EXTEND_FUNCTION_2G_INITIAL
+ 133  0016            2         ifdef EXTEND_FUNCTION_2G_INITIAL
+ 133  0016            2                 ifdef   PBP
+ 133  0016            2                 MOV     A,bank EXTEND_FUNCTION_2G_INITIAL
+ 133  0016            2                 MOV     PBP,A
+ 133  0016            2                 endif
+ 133  0016            2                 CALL EXTEND_FUNCTION_2G_INITIAL
+ 133  0016            2         endif
+ 133  0016            1                 CALL_   EXTEND_FUNCTION_2H_INITIAL
+ 133  0016            2         ifdef EXTEND_FUNCTION_2H_INITIAL
+ 133  0016            2                 ifdef   PBP
+ 133  0016            2                 MOV     A,bank EXTEND_FUNCTION_2H_INITIAL
+ 133  0016            2                 MOV     PBP,A
+ 133  0016            2                 endif
+ 133  0016            2                 CALL EXTEND_FUNCTION_2H_INITIAL
+ 133  0016            2         endif
+ 134  0016              
+ 135  0016                              ;;-----------------------
+ 136  0016              MAIN_LOOP:      ;;- MAIN PROGRAM LOOP ---
+ 137  0016                              ;;-----------------------
+ 138  0016  0001                        CLR     WDT
+ 139  0017  0001                        CLR     WDT1
+ 140  0018  0005                        CLR     WDT2
+ 141  0019              
+ 142  0019                              ;----------------
+ 143  0019                              ;-CHECK POR ID --
+ 144  0019                              ;----------------
+ 145  0019                      ifndef  ESCpowerIDcheck
+ 146  0019  0F42                        MOV     A,042H
+ 147  001A  0480     R                  XORM    A,POR_ID[0]
+ 148  001B  0F53                        MOV     A,053H
+文件：MAIN_PROGRAM_V102.asm 编译器版本 2.96 页次27
+
+ 149  001C  3D0A                        SZ      Z
+ 150  001D  0480     R                  XORM    A,POR_ID[1]
+ 151  001E  390A                        SNZ     Z
+ 152  001F  2800                        JMP     000H
+ 153  0020                      endif
+ 154  0020                              ;----------------------
+ 155  0020                              ;-RE INITIAL SYS. CLOCK
+ 156  0020                              ;----------------------
+ 157  0020                              RELOAD_SYS_CLOCK
+ 157  0020            1                 ifdef   _BS83A02A_
+ 157  0020            1                         MOV     A,00000011B
+ 157  0020            1                         MOV [0BH],A
+ 157  0020            1 
+ 157  0020            1                 endif
+ 157  0020            1 
+ 157  0020            1 
+ 157  0020            1                 ;--------------------------------
+ 157  0020            1                 ;-INITIAL FOR BS83A04A  ---------
+ 157  0020            1                 ;--------------------------------
+ 157  0020            1                 ifdef   _BS83A04A_
+ 157  0020            1                         MOV     A,00000011B
+ 157  0020            1                         MOV [0BH],A
+ 157  0020            1                 endif
+ 157  0020            1 
+ 157  0020            1                 ;--------------------------------
+ 157  0020            1                 ;-INITIAL FOR BS83B04A  ---------
+ 157  0020            1                 ;--------------------------------
+ 157  0020            1                 ifdef   _BS83B04A_
+ 157  0020            1                         MOV     A,00000011B
+ 157  0020            1                         MOV [0BH],A
+ 157  0020            1                 endif
+ 157  0020            1 
+ 157  0020            1                 ;--------------------------------
+ 157  0020            1                 ;-INITIAL FOR BS83B08A  ---------
+ 157  0020            1                 ;--------------------------------
+ 157  0020            1                 ifdef   _BS83B08A_
+ 157  0020            1                         ;-SET SYSTEM CLOCK
+ 157  0020            1                         MOV     A,(( 2<<4)^00110000B)&00110000B
+ 157  0020            1                         MOV [0CH],A
+ 157  0020            1                         ;--
+ 157  0020            1                         MOV     A,00000011B
+ 157  0020            1                         MOV [0BH],A
+ 157  0020            1                 endif
+ 157  0020            1 
+ 157  0020            1                 ;--------------------------------
+ 157  0020            1                 ;-INITIAL FOR BS83B12A  ---------
+ 157  0020            1                 ;--------------------------------
+ 157  0020            1                 ifdef   _BS83B12A_
+ 157  0020            1                         ;-SET SYSTEM CLOCK
+ 157  0020            1                         MOV     A,(( 2<<4)^00110000B)&00110000B
+ 157  0020            1                         MOV [0CH],A
+ 157  0020            1                         ;--
+ 157  0020            1                         MOV     A,00000011B
+ 157  0020            1                         MOV [0BH],A
+ 157  0020            1                 endif
+ 157  0020            1 
+ 157  0020            1                 ;--------------------------------
+ 157  0020            1                 ;-INITIAL FOR BS83B16A  ---------
+ 157  0020            1                 ;--------------------------------
+ 157  0020            1                 ifdef   _BS83B16A_
+文件：MAIN_PROGRAM_V102.asm 编译器版本 2.96 页次28
+
+ 157  0020            1                         ;-SET SYSTEM CLOCK
+ 157  0020            1                         MOV     A,(( 2<<4)^00110000B)&00110000B
+ 157  0020            1                         MOV [0CH],A
+ 157  0020            1                         ;--
+ 157  0020            1                         MOV     A,00000011B
+ 157  0020            1                         MOV [0BH],A
+ 157  0020            1                 endif
+ 157  0020            1 
+ 157  0020            1                 ;--------------------------------
+ 157  0020            1                 ;-INITIAL FOR BS84B06A  ---------
+ 157  0020            1                 ;--------------------------------
+ 157  0020            1                 ifdef   _BS84B06A_
+ 157  0020            1                         ;-SET SYSTEM CLOCK
+ 157  0020  0F10      1                         MOV     A,(( 2<<4)^00110000B)&00110000B
+ 157  0021            1                       ;;MOV     A,(SystemClock<<4)&00110000B
+ 157  0021  008C      1                         MOV [0CH],A
+ 157  0022            1                         ;--
+ 157  0022  0F03      1                         MOV     A,00000011B
+ 157  0023  008B      1                         MOV [0BH],A
+ 157  0024            1                 endif
+ 157  0024            1 
+ 157  0024            1                 ;--------------------------------
+ 157  0024            1                 ;-INITIAL FOR BS84B08A  ---------
+ 157  0024            1                 ;--------------------------------
+ 157  0024            1                 ifdef   _BS84B08A_
+ 157  0024            1                         ;-SET SYSTEM CLOCK
+ 157  0024            1                         MOV     A,(( 2<<4)^00110000B)&00110000B
+ 157  0024            1                         MOV [0CH],A
+ 157  0024            1                         ;--
+ 157  0024            1                         MOV     A,00000011B
+ 157  0024            1                         MOV [0BH],A
+ 157  0024            1                 endif
+ 157  0024            1 
+ 157  0024            1                 ;--------------------------------
+ 157  0024            1                 ;-INITIAL FOR BS84C12A  ---------
+ 157  0024            1                 ;--------------------------------
+ 157  0024            1                 ifdef   _BS84C12A_
+ 157  0024            1                         ;-SET SYSTEM CLOCK
+ 157  0024            1                         MOV     A,(( 2<<4)^00110000B)&00110000B
+ 157  0024            1                         MOV [0CH],A
+ 157  0024            1                         ;--
+ 157  0024            1                         MOV     A,00000011B
+ 157  0024            1                         MOV [0BH],A
+ 157  0024            1                 endif
+ 157  0024            1 
+ 157  0024            1 
+ 157  0024            1                 ;--------------------------------
+ 157  0024            1                 ;-INITIAL FOR BS84C16A  ---------
+ 157  0024            1                 ;--------------------------------
+ 157  0024            1                 ifdef   _BS84C16A_
+ 157  0024            1                         ;-SET SYSTEM CLOCK
+ 157  0024            1                         MOV     A,(( 2<<4)&00110000B);;|10000000B
+ 157  0024            1                         MOV [0CH],A          ;BIT7=FSYSON
+ 157  0024            1                         ;--                     ;BIT5:BIT4=00/11:8MHZ ; 01:12MHZ ; 10:16MHZ
+ 157  0024            1                         MOV     A,00000011B
+ 157  0024            1                         MOV [0BH],A
+ 157  0024            1                 endif
+ 157  0024            1 
+ 157  0024            1                 ;--------------------------------
+ 157  0024            1                 ;-INITIAL FOR BS84D20A  ---------
+文件：MAIN_PROGRAM_V102.asm 编译器版本 2.96 页次29
+
+ 157  0024            1                 ;--------------------------------
+ 157  0024            1                 ifdef   _BS84D20A_
+ 157  0024            1                         ;-SET SYSTEM CLOCK
+ 157  0024            1                         MOV     A,(( 2<<4)&00110000B);;|10000000B
+ 157  0024            1                         MOV [0CH],A          ;BIT7=FSYSON
+ 157  0024            1                         ;--                     ;BIT5:BIT4=00/11:8MHZ ; 01:12MHZ ; 10:16MHZ
+ 157  0024            1                         MOV     A,00000011B
+ 157  0024            1                         MOV [0BH],A
+ 157  0024            1                 endif
+ 157  0024            1 
+ 157  0024            1 
+ 157  0024            1                 ;--------------------------------
+ 157  0024            1                 ;-INITIAL FOR BS82B16   ---------
+ 157  0024            1                 ;--------------------------------
+ 157  0024            1                 ifdef   _BS82B16_
+ 157  0024            1                         ;-SET SYSTEM CLOCK
+ 157  0024            1                         MOV     A,(( 2<<4)^00110000B)&00110000B
+ 157  0024            1                         MOV [0CH],A
+ 157  0024            1                         ;--
+ 157  0024            1                         MOV     A,00000011B
+ 157  0024            1                         MOV [0BH],A
+ 157  0024            1                 endif
+ 157  0024            1 
+ 157  0024            1                 ;--------------------------------
+ 157  0024            1                 ;-INITIAL FOR BS82B12A  ---------
+ 157  0024            1                 ;--------------------------------
+ 157  0024            1                 ifdef   _BS82B12A_
+ 157  0024            1                         ;-SET SYSTEM CLOCK
+ 157  0024            1                         MOV     A,(( 2<<4)&00110000B);;|10000000B
+ 157  0024            1                         MOV [0CH],A          ;BIT7=FSYSON
+ 157  0024            1                         ;--                     ;BIT5:BIT4=00/11:8MHZ ; 01:12MHZ ; 10:16MHZ
+ 157  0024            1                         MOV     A,00000011B
+ 157  0024            1                         MOV [0BH],A
+ 157  0024            1                 endif
+ 157  0024            1 
+ 157  0024            1                 ;--------------------------------
+ 157  0024            1                 ;-INITIAL FOR BS82C16A  ---------
+ 157  0024            1                 ;--------------------------------
+ 157  0024            1                 ifdef   _BS82C16A_
+ 157  0024            1                         ;-SET SYSTEM CLOCK
+ 157  0024            1                         MOV     A,(( 2<<4)&00110000B);;|10000000B
+ 157  0024            1                         MOV [0CH],A          ;BIT7=FSYSON
+ 157  0024            1                         ;--                     ;BIT5:BIT4=00/11:8MHZ ; 01:12MHZ ; 10:16MHZ
+ 157  0024            1                         MOV     A,00000011B
+ 157  0024            1                         MOV [0BH],A
+ 157  0024            1                 endif
+ 157  0024            1 
+ 157  0024            1                 ;--------------------------------
+ 157  0024            1                 ;-INITIAL FOR BS82D20A  ---------
+ 157  0024            1                 ;--------------------------------
+ 157  0024            1                 ifdef   _BS82D20A_
+ 157  0024            1                         ;-SET SYSTEM CLOCK
+ 157  0024            1                         MOV     A,(( 2<<4)&00110000B);;|10000000B
+ 157  0024            1                         MOV [0CH],A          ;BIT7=FSYSON
+ 157  0024            1                         ;--                     ;BIT5:BIT4=00/11:8MHZ ; 01:12MHZ ; 10:16MHZ
+ 157  0024            1                         MOV     A,00000011B
+ 157  0024            1                         MOV [0BH],A
+ 157  0024            1                 endif
+ 157  0024            1 
+ 157  0024            1                 ;--------------------------------
+文件：MAIN_PROGRAM_V102.asm 编译器版本 2.96 页次30
+
+ 157  0024            1                 ;-INITIAL FOR BS45FH21  ---------
+ 157  0024            1                 ;--------------------------------
+ 157  0024            1                 ifdef   _BS45FH21_
+ 157  0024            1                         ;CLR     SCC             ;FH=Fsys/1
+ 157  0024            1                         MOV     A,00011111B
+ 157  0024            1                         ANDM    A,SCC
+ 157  0024            1                         SET     HIRCEN
+ 157  0024            1                 endif
+ 157  0024            1 
+ 157  0024            1                 ;--------------------------------
+ 157  0024            1                 ;-INITIAL FOR BS66F340  ---------
+ 157  0024            1                 ;--------------------------------
+ 157  0024            1                 ifdef   _BS66F340_
+ 157  0024            1                         ;CLR     SCC             ;FH=Fsys/1
+ 157  0024            1                         MOV     A,00011111B
+ 157  0024            1                         ANDM    A,SCC
+ 157  0024            1                         MOV     A,(( 2<<2)&00001100B)|00000001B
+ 157  0024            1                         MOV     HIRCC,A
+ 157  0024            1                 endif
+ 157  0024            1                 ;--------------------------------
+ 157  0024            1                 ;-INITIAL FOR BS66F350  ---------
+ 157  0024            1                 ;--------------------------------
+ 157  0024            1                 ifdef   _BS66F350_
+ 157  0024            1                         ;CLR     SCC             ;FH=Fsys/1
+ 157  0024            1                         MOV     A,00011111B
+ 157  0024            1                         ANDM    A,SCC
+ 157  0024            1                         MOV     A,(( 2<<2)&00001100B)|00000001B
+ 157  0024            1                         MOV     HIRCC,A
+ 157  0024            1                 endif
+ 157  0024            1 
+ 157  0024            1                 ;--------------------------------
+ 157  0024            1                 ;-INITIAL FOR BS66F360  ---------
+ 157  0024            1                 ;--------------------------------
+ 157  0024            1                 ifdef   _BS66F360_
+ 157  0024            1                         ;CLR     SCC             ;FH=Fsys/1
+ 157  0024            1                         MOV     A,00011111B
+ 157  0024            1                         ANDM    A,SCC
+ 157  0024            1                         MOV     A,(( 2<<2)&00001100B)|00000001B
+ 157  0024            1                         MOV     HIRCC,A
+ 157  0024            1                 endif
+ 157  0024            1 
+ 157  0024            1                 ;--------------------------------
+ 157  0024            1                 ;-INITIAL FOR BS67F340  ---------
+ 157  0024            1                 ;--------------------------------
+ 157  0024            1                 ifdef   _BS67F340_
+ 157  0024            1                         ;CLR     SCC             ;FH=Fsys/1
+ 157  0024            1                         MOV     A,00011111B
+ 157  0024            1                         ANDM    A,SCC
+ 157  0024            1                         MOV     A,(( 2<<2)&00001100B)|00000001B
+ 157  0024            1                         MOV     HIRCC,A
+ 157  0024            1                 endif
+ 157  0024            1                 ;--------------------------------
+ 157  0024            1                 ;-INITIAL FOR BS67F350  ---------
+ 157  0024            1                 ;--------------------------------
+ 157  0024            1                 ifdef   _BS67F350_
+ 157  0024            1                         ;CLR     SCC             ;FH=Fsys/1
+ 157  0024            1                         MOV     A,00011111B
+ 157  0024            1                         ANDM    A,SCC
+ 157  0024            1                         MOV     A,(( 2<<2)&00001100B)|00000001B
+ 157  0024            1                         MOV     HIRCC,A
+文件：MAIN_PROGRAM_V102.asm 编译器版本 2.96 页次31
+
+ 157  0024            1                 endif
+ 157  0024            1                 ;--------------------------------
+ 157  0024            1                 ;-INITIAL FOR BS67F360  ---------
+ 157  0024            1                 ;--------------------------------
+ 157  0024            1                 ifdef   _BS67F360_
+ 157  0024            1                         ;CLR     SCC             ;FH=Fsys/1
+ 157  0024            1                         MOV     A,00011111B
+ 157  0024            1                         ANDM    A,SCC
+ 157  0024            1                         MOV     A,(( 2<<2)&00001100B)|00000001B
+ 157  0024            1                         MOV     HIRCC,A
+ 157  0024            1                 endif
+ 157  0024            1                 ;--------------------------------
+ 157  0024            1                 ;-INITIAL FOR BS66FV340  ---------
+ 157  0024            1                 ;--------------------------------
+ 157  0024            1                 ifdef   _BS66FV340_
+ 157  0024            1                         MOV     A,00011111B     ;FH=Fsys/1
+ 157  0024            1                         ANDM    A,SCC
+ 157  0024            1                         MOV     A,(( 2<<2)&00001100B)|00000001B
+ 157  0024            1                         MOV     HIRCC,A
+ 157  0024            1                 endif
+ 157  0024            1                 ;--------------------------------
+ 157  0024            1                 ;-INITIAL FOR BS66FV350  ---------
+ 157  0024            1                 ;--------------------------------
+ 157  0024            1                 ifdef   _BS66FV350_
+ 157  0024            1                         MOV     A,00011111B     ;FH=Fsys/1
+ 157  0024            1                         ANDM    A,SCC
+ 157  0024            1                         MOV     A,(( 2<<2)&00001100B)|00000001B
+ 157  0024            1                         MOV     HIRCC,A
+ 157  0024            1                 endif
+ 157  0024            1                 ;--------------------------------
+ 157  0024            1                 ;-INITIAL FOR BS66FV360  ---------
+ 157  0024            1                 ;--------------------------------
+ 157  0024            1                 ifdef   _BS66FV360_
+ 157  0024            1                         MOV     A,00011111B     ;FH=Fsys/1
+ 157  0024            1                         ANDM    A,SCC
+ 157  0024            1                         MOV     A,(( 2<<2)&00001100B)|00000001B
+ 157  0024            1                         MOV     HIRCC,A
+ 157  0024            1                 endif
+ 157  0024            1 
+ 157  0024            1                 ;--------------------------------
+ 157  0024            1                 ;-INITIAL FOR BS86B12A  ---------
+ 157  0024            1                 ;--------------------------------
+ 157  0024            1                 ifdef   _BS86B12A_
+ 157  0024            1                         ;-SET SYSTEM CLOCK
+ 157  0024            1                         MOV     A,(( 2<<4)&00110000B);;|10000000B
+ 157  0024            1                         MOV [0CH],A          ;BIT7=FSYSON
+ 157  0024            1                         ;--                     ;BIT5:BIT4=00/11:8MHZ ; 01:12MHZ ; 10:16MHZ
+ 157  0024            1                         MOV     A,00000011B
+ 157  0024            1                         MOV [0BH],A
+ 157  0024            1                 endif
+ 157  0024            1 
+ 157  0024            1                 ;--------------------------------
+ 157  0024            1                 ;-INITIAL FOR BS86C16A  ---------
+ 157  0024            1                 ;--------------------------------
+ 157  0024            1                 ifdef   _BS86C16A_
+ 157  0024            1                         ;-SET SYSTEM CLOCK
+ 157  0024            1                         MOV     A,(( 2<<4)&00110000B);;|10000000B
+ 157  0024            1                         MOV [0CH],A          ;BIT7=FSYSON
+ 157  0024            1                         ;--                     ;BIT5:BIT4=00/11:8MHZ ; 01:12MHZ ; 10:16MHZ
+ 157  0024            1                         MOV     A,00000011B
+文件：MAIN_PROGRAM_V102.asm 编译器版本 2.96 页次32
+
+ 157  0024            1                         MOV [0BH],A
+ 157  0024            1                 endif
+ 157  0024            1 
+ 157  0024            1                 ;--------------------------------
+ 157  0024            1                 ;-INITIAL FOR BS86D20A  ---------
+ 157  0024            1                 ;--------------------------------
+ 157  0024            1                 ifdef   _BS86D20A_
+ 157  0024            1                         ;-SET SYSTEM CLOCK
+ 157  0024            1                         MOV     A,(( 2<<4)&00110000B);;|10000000B
+ 157  0024            1                         MOV [0CH],A          ;BIT7=FSYSON
+ 157  0024            1                         ;--                     ;BIT5:BIT4=00/11:8MHZ ; 01:12MHZ ; 10:16MHZ
+ 157  0024            1                         MOV     A,00000011B
+ 157  0024            1                         MOV [0BH],A
+ 157  0024            1                 endif
+ 157  0024            1 
+ 157  0024            1                 ;--------------------------------
+ 157  0024            1                 ;-INITIAL FOR BS87C16A  ---------
+ 157  0024            1                 ;--------------------------------
+ 157  0024            1                 ifdef   _BS87C16A_
+ 157  0024            1                         ;-SET SYSTEM CLOCK
+ 157  0024            1                         MOV     A,(( 2<<4)&00110000B);;|10000000B
+ 157  0024            1                         MOV [0CH],A          ;BIT7=FSYSON
+ 157  0024            1                         ;--                     ;BIT5:BIT4=00/11:8MHZ ; 01:12MHZ ; 10:16MHZ
+ 157  0024            1                         MOV     A,00000011B
+ 157  0024            1                         MOV [0BH],A
+ 157  0024            1                 endif
+ 157  0024            1 
+ 157  0024            1 
+ 158  0024                              EXTEND_FUNCTION
+ 158  0024            1                 CALL_   EXTEND_FUNCTION_1A
+ 158  0024            2         ifdef EXTEND_FUNCTION_1A
+ 158  0024            2                 ifdef   PBP
+ 158  0024            2                 MOV     A,bank _BS84B06A_LIBV413
+ 158  0024            2                 MOV     PBP,A
+ 158  0024            2                 endif
+ 158  0024  2000     E2                 CALL _BS84B06A_LIBV413
+ 158  0025            2         endif
+ 158  0025            1                 CALL_   EXTEND_FUNCTION_1B
+ 158  0025            2         ifdef EXTEND_FUNCTION_1B
+ 158  0025            2                 ifdef   PBP
+ 158  0025            2                 MOV     A,bank EXTEND_FUNCTION_1B
+ 158  0025            2                 MOV     PBP,A
+ 158  0025            2                 endif
+ 158  0025            2                 CALL EXTEND_FUNCTION_1B
+ 158  0025            2         endif
+ 158  0025            1                 CALL_   EXTEND_FUNCTION_1C
+ 158  0025            2         ifdef EXTEND_FUNCTION_1C
+ 158  0025            2                 ifdef   PBP
+ 158  0025            2                 MOV     A,bank EXTEND_FUNCTION_1C
+ 158  0025            2                 MOV     PBP,A
+ 158  0025            2                 endif
+ 158  0025            2                 CALL EXTEND_FUNCTION_1C
+ 158  0025            2         endif
+ 158  0025            1                 CALL_   EXTEND_FUNCTION_1D
+ 158  0025            2         ifdef EXTEND_FUNCTION_1D
+ 158  0025            2                 ifdef   PBP
+ 158  0025            2                 MOV     A,bank _USER_PROGRAM
+ 158  0025            2                 MOV     PBP,A
+ 158  0025            2                 endif
+ 158  0025  2000     E2                 CALL _USER_PROGRAM
+文件：MAIN_PROGRAM_V102.asm 编译器版本 2.96 页次33
+
+ 158  0026            2         endif
+ 158  0026            1                 CALL_   EXTEND_FUNCTION_1E
+ 158  0026            2         ifdef EXTEND_FUNCTION_1E
+ 158  0026            2                 ifdef   PBP
+ 158  0026            2                 MOV     A,bank EXTEND_FUNCTION_1E
+ 158  0026            2                 MOV     PBP,A
+ 158  0026            2                 endif
+ 158  0026            2                 CALL EXTEND_FUNCTION_1E
+ 158  0026            2         endif
+ 158  0026            1                 CALL_   EXTEND_FUNCTION_1F
+ 158  0026            2         ifdef EXTEND_FUNCTION_1F
+ 158  0026            2                 ifdef   PBP
+ 158  0026            2                 MOV     A,bank EXTEND_FUNCTION_1F
+ 158  0026            2                 MOV     PBP,A
+ 158  0026            2                 endif
+ 158  0026            2                 CALL EXTEND_FUNCTION_1F
+ 158  0026            2         endif
+ 158  0026            1                 CALL_   EXTEND_FUNCTION_1G
+ 158  0026            2         ifdef EXTEND_FUNCTION_1G
+ 158  0026            2                 ifdef   PBP
+ 158  0026            2                 MOV     A,bank EXTEND_FUNCTION_1G
+ 158  0026            2                 MOV     PBP,A
+ 158  0026            2                 endif
+ 158  0026            2                 CALL EXTEND_FUNCTION_1G
+ 158  0026            2         endif
+ 158  0026            1                 CALL_   EXTEND_FUNCTION_1H
+ 158  0026            2         ifdef EXTEND_FUNCTION_1H
+ 158  0026            2                 ifdef   PBP
+ 158  0026            2                 MOV     A,bank EXTEND_FUNCTION_1H
+ 158  0026            2                 MOV     PBP,A
+ 158  0026            2                 endif
+ 158  0026            2                 CALL EXTEND_FUNCTION_1H
+ 158  0026            2         endif
+ 158  0026            1 
+ 158  0026            1                 CALL_   EXTEND_FUNCTION_2A
+ 158  0026            2         ifdef EXTEND_FUNCTION_2A
+ 158  0026            2                 ifdef   PBP
+ 158  0026            2                 MOV     A,bank EXTEND_FUNCTION_2A
+ 158  0026            2                 MOV     PBP,A
+ 158  0026            2                 endif
+ 158  0026            2                 CALL EXTEND_FUNCTION_2A
+ 158  0026            2         endif
+ 158  0026            1                 CALL_   EXTEND_FUNCTION_2B
+ 158  0026            2         ifdef EXTEND_FUNCTION_2B
+ 158  0026            2                 ifdef   PBP
+ 158  0026            2                 MOV     A,bank EXTEND_FUNCTION_2B
+ 158  0026            2                 MOV     PBP,A
+ 158  0026            2                 endif
+ 158  0026            2                 CALL EXTEND_FUNCTION_2B
+ 158  0026            2         endif
+ 158  0026            1                 CALL_   EXTEND_FUNCTION_2C
+ 158  0026            2         ifdef EXTEND_FUNCTION_2C
+ 158  0026            2                 ifdef   PBP
+ 158  0026            2                 MOV     A,bank EXTEND_FUNCTION_2C
+ 158  0026            2                 MOV     PBP,A
+ 158  0026            2                 endif
+ 158  0026            2                 CALL EXTEND_FUNCTION_2C
+ 158  0026            2         endif
+ 158  0026            1                 CALL_   EXTEND_FUNCTION_2D
+ 158  0026            2         ifdef EXTEND_FUNCTION_2D
+文件：MAIN_PROGRAM_V102.asm 编译器版本 2.96 页次34
+
+ 158  0026            2                 ifdef   PBP
+ 158  0026            2                 MOV     A,bank EXTEND_FUNCTION_2D
+ 158  0026            2                 MOV     PBP,A
+ 158  0026            2                 endif
+ 158  0026            2                 CALL EXTEND_FUNCTION_2D
+ 158  0026            2         endif
+ 158  0026            1                 CALL_   EXTEND_FUNCTION_2E
+ 158  0026            2         ifdef EXTEND_FUNCTION_2E
+ 158  0026            2                 ifdef   PBP
+ 158  0026            2                 MOV     A,bank EXTEND_FUNCTION_2E
+ 158  0026            2                 MOV     PBP,A
+ 158  0026            2                 endif
+ 158  0026            2                 CALL EXTEND_FUNCTION_2E
+ 158  0026            2         endif
+ 158  0026            1                 CALL_   EXTEND_FUNCTION_2F
+ 158  0026            2         ifdef EXTEND_FUNCTION_2F
+ 158  0026            2                 ifdef   PBP
+ 158  0026            2                 MOV     A,bank EXTEND_FUNCTION_2F
+ 158  0026            2                 MOV     PBP,A
+ 158  0026            2                 endif
+ 158  0026            2                 CALL EXTEND_FUNCTION_2F
+ 158  0026            2         endif
+ 158  0026            1                 CALL_   EXTEND_FUNCTION_2G
+ 158  0026            2         ifdef EXTEND_FUNCTION_2G
+ 158  0026            2                 ifdef   PBP
+ 158  0026            2                 MOV     A,bank EXTEND_FUNCTION_2G
+ 158  0026            2                 MOV     PBP,A
+ 158  0026            2                 endif
+ 158  0026            2                 CALL EXTEND_FUNCTION_2G
+ 158  0026            2         endif
+ 158  0026            1                 CALL_   EXTEND_FUNCTION_2H
+ 158  0026            2         ifdef EXTEND_FUNCTION_2H
+ 158  0026            2                 ifdef   PBP
+ 158  0026            2                 MOV     A,bank EXTEND_FUNCTION_2H
+ 158  0026            2                 MOV     PBP,A
+ 158  0026            2                 endif
+ 158  0026            2                 CALL EXTEND_FUNCTION_2H
+ 158  0026            2         endif
+ 159  0026                              ;----------------
+ 160  0026                              ;-SET POR ID  ---
+ 161  0026                              ;----------------
+ 162  0026                      ifndef  ESCpowerIDcheck
+ 163  0026  0F42                        MOV     A,042H      ;ASCII = B
+ 164  0027  0080     R                  MOV     POR_ID[0],A
+ 165  0028  0F53                        MOV     A,053H      ;ASCII = S
+ 166  0029  0080     R                  MOV     POR_ID[1],A
+ 167  002A                      endif
+ 168  002A              
+ 169  002A                              ;--------------------
+ 170  002A              WDT_WAKEUP:     ;-WDT WAKEUP FUNCTION
+ 171  002A                              ;--------------------
+ 172  002A                              if      PowerSave==1
+ 173  002A                              CALL_   _CHECK_KEY_WAKEUP
+ 174  002A                              endif
+ 175  002A              
+ 176  002A                              ifdef   PBP
+ 177  002A                              MOV     A,BANK MAIN_LOOP
+ 178  002A                              MOV     PBP,A
+ 179  002A                              endif
+ 180  002A  2800     R                  JMP     MAIN_LOOP
+文件：MAIN_PROGRAM_V102.asm 编译器版本 2.96 页次35
+
+ 181  002B              
+ 182  002B              
+ 183  002B              
+ 184  002B              
+ 185  002B              
+ 186  002B              
+ 187  002B              
+ 188  002B              
+ 189  002B              
+ 190  002B              ;;***********************************************************
+ 191  002B              ;;*SUB. NAME:                                               *
+ 192  002B              ;;*INPUT    :                                               *
+ 193  002B              ;;*OUTPUT   :                                               *
+ 194  002B              ;;*USED REG.:                                               *
+ 195  002B              ;;*FUNCTION :                                               *
+ 196  002B              ;;***********************************************************
+ 197  002B              CLEAR_RAM:
+ 198  002B  0083                        MOV     MP1,A
+ 199  002C                      ifndef  ESCpowerIDcheck
+ 200  002C                          ifdef  BP
+ 201  002C                              ;-CHECK BANK
+ 202  002C  1084                        SZ      BP
+ 203  002D  2800     R                  JMP     CLR_RAM
+ 204  002E                          endif
+ 205  002E                              ;-CHECK POR_ID RAM
+ 206  002E  0F00     R                  MOV     A,OFFSET POR_ID
+ 207  002F  0403                        XOR     A,MP1
+ 208  0030  0F00     R                  MOV     A,OFFSET POR_ID+1
+ 209  0031  390A                        SNZ     Z
+ 210  0032  0403                        XOR     A,MP1
+ 211  0033  390A                        SNZ     Z
+ 212  0034                      endif
+ 213  0034              CLR_RAM:        ;-CLEAR RAM
+ 214  0034  1F02                        CLR     IAR1
+ 215  0035  1603                        SIZA    MP1
+ 216  0036  2800     R                  JMP     CLEAR_RAM
+ 217  0037              
+ 218  0037  0003                        RET
+ 219  0038              
+ 220  0038              
+ 221  0038              ;;***********************************************************
+ 222  0038              ;;*SUB. NAME:                                               *
+ 223  0038              ;;*INPUT    :                                               *
+ 224  0038              ;;*OUTPUT   :                                               *
+ 225  0038              ;;*USED REG.:                                               *
+ 226  0038              ;;*FUNCTION :                                               *
+ 227  0038              ;;***********************************************************
+ 228  0038              _LOAD_TKS_GLOBE_VARIES:
+ 229  0038              _LOAD_HXT_REFERENCE:
+ 230  0038                              ;------------------------
+ 231  0038                              ;-SET TKS LIBRARY OPTION-
+ 232  0038                              ;------------------------
+ 233  0038  0F70                        MOV     A,GlobeOptionA
+ 234  0039  0080     E                  MOV     _GLOBE_VARIES[0],A
+ 235  003A  0FF1                        MOV     A,GlobeOptionB
+ 236  003B  0080     E                  MOV     _GLOBE_VARIES[1],A
+ 237  003C  0F88                        MOV     A,GlobeOptionC
+ 238  003D  0080     E                  MOV     _GLOBE_VARIES[2],A
+ 239  003E              
+ 240  003E                              ;--------------------------
+文件：MAIN_PROGRAM_V102.asm 编译器版本 2.96 页次36
+
+ 241  003E                              ;-SET TOUCH OR IO ATTRIBUTE
+ 242  003E                              ;--------------------------
+ 243  003E  0F3F                        MOV     A,IO_TOUCH_ATTR&0FFH
+ 244  003F  0080     E                  MOV     _KEY_IO_SEL[0],A
+ 245  0040                              ;-IF OVER 2 TOUCH IP (8~16KEY)
+ 246  0040                              if      TouchKeyAmount > 8
+ 247  0040                              MOV     A,(IO_TOUCH_ATTR>>8)&0FFH
+ 248  0040                              MOV     _KEY_IO_SEL[1],A
+ 249  0040                              endif
+ 250  0040                              ;-IF OVER 4 TOUCH IP (17~24KEY)
+ 251  0040                              if      TouchKeyAmount > 16
+ 252  0040                              MOV     A,(IO_TOUCH_ATTR>>16)&0FFH
+ 253  0040                              MOV     _KEY_IO_SEL[2],A
+ 254  0040                              endif
+ 255  0040                              ;-IF OVER 6 TOUCH IP (25~32KEY)
+ 256  0040                              if      TouchKeyAmount > 24
+ 257  0040                              MOV     A,(IO_TOUCH_ATTR>>24)&0FFH
+ 258  0040                              MOV     _KEY_IO_SEL[3],A
+ 259  0040                              endif
+ 260  0040              
+ 261  0040                              ;------------------------
+ 262  0040                              ;-SET TOUCH KEY THRESHOLD
+ 263  0040                              ;------------------------
+ 264  0040                              ;-KEY1 THRESHOLD
+ 265  0040  0F10                        MOV     A,Key1Threshold
+ 266  0041  0080     E                  MOV     _GLOBE_VARIES[3],A
+ 267  0042              
+ 268  0042                              if      TouchKeyAmount > 1
+ 269  0042                              ;-KEY2 THRESHOLD
+ 270  0042  0F10                        MOV     A,Key2Threshold
+ 271  0043  0080     E                  MOV     _GLOBE_VARIES[4],A
+ 272  0044                              endif
+ 273  0044              
+ 274  0044                              if      TouchKeyAmount > 2
+ 275  0044                              ;-KEY3 THRESHOLD
+ 276  0044  0F10                        MOV     A,Key3Threshold
+ 277  0045  0080     E                  MOV     _GLOBE_VARIES[5],A
+ 278  0046                              endif
+ 279  0046              
+ 280  0046                              if      TouchKeyAmount > 3
+ 281  0046                              ;-KEY4 THRESHOLD
+ 282  0046  0F10                        MOV     A,Key4Threshold
+ 283  0047  0080     E                  MOV     _GLOBE_VARIES[6],A
+ 284  0048                              endif
+ 285  0048              
+ 286  0048                              if      TouchKeyAmount > 4
+ 287  0048                              ;-KEY5 THRESHOLD
+ 288  0048  0F10                        MOV     A,Key5Threshold
+ 289  0049  0080     E                  MOV     _GLOBE_VARIES[7],A
+ 290  004A                              endif
+ 291  004A              
+ 292  004A                              if      TouchKeyAmount > 5
+ 293  004A                              ;-KEY6 THRESHOLD
+ 294  004A  0F10                        MOV     A,Key6Threshold
+ 295  004B  0080     E                  MOV     _GLOBE_VARIES[8],A
+ 296  004C                              endif
+ 297  004C              
+ 298  004C                              if      TouchKeyAmount > 6
+ 299  004C                              ;-KEY7 THRESHOLD
+ 300  004C                              MOV     A,Key7Threshold
+文件：MAIN_PROGRAM_V102.asm 编译器版本 2.96 页次37
+
+ 301  004C                              MOV     _GLOBE_VARIES[9],A
+ 302  004C                              endif
+ 303  004C              
+ 304  004C                              if      TouchKeyAmount > 7
+ 305  004C                              ;-KEY8 THRESHOLD
+ 306  004C                              MOV     A,Key8Threshold
+ 307  004C                              MOV     _GLOBE_VARIES[10],A
+ 308  004C                              endif
+ 309  004C              
+ 310  004C                              if     TouchKeyAmount > 8
+ 311  004C                              ;-KEY9 THRESHOLD
+ 312  004C                              MOV     A,Key9Threshold
+ 313  004C                              MOV     _GLOBE_VARIES[11],A
+ 314  004C                              endif
+ 315  004C              
+ 316  004C                              if      TouchKeyAmount > 9
+ 317  004C                              ;-KEY10 THRESHOLD
+ 318  004C                              MOV     A,Key10Threshold
+ 319  004C                              MOV     _GLOBE_VARIES[12],A
+ 320  004C                              endif
+ 321  004C              
+ 322  004C                              if      TouchKeyAmount > 10
+ 323  004C                              ;-KEY11 THRESHOLD
+ 324  004C                              MOV     A,Key11Threshold
+ 325  004C                              MOV     _GLOBE_VARIES[13],A
+ 326  004C                              endif
+ 327  004C              
+ 328  004C                              if      TouchKeyAmount > 11
+ 329  004C                              ;-KEY12 THRESHOLD
+ 330  004C                              MOV     A,Key12Threshold
+ 331  004C                              MOV     _GLOBE_VARIES[14],A
+ 332  004C                              endif
+ 333  004C              
+ 334  004C                              if      TouchKeyAmount > 12
+ 335  004C                              ;-KEY13 THRESHOLD
+ 336  004C                              MOV     A,Key13Threshold
+ 337  004C                              MOV     _GLOBE_VARIES[15],A
+ 338  004C                              endif
+ 339  004C              
+ 340  004C                              if      TouchKeyAmount > 13
+ 341  004C                              ;-KEY14 THRESHOLD
+ 342  004C                              MOV     A,Key14Threshold
+ 343  004C                              MOV     _GLOBE_VARIES[16],A
+ 344  004C                              endif
+ 345  004C              
+ 346  004C                              if      TouchKeyAmount > 14
+ 347  004C                              ;-KEY15 THRESHOLD
+ 348  004C                              MOV     A,Key15Threshold
+ 349  004C                              MOV     _GLOBE_VARIES[17],A
+ 350  004C                              endif
+ 351  004C              
+ 352  004C                              if      TouchKeyAmount > 15
+ 353  004C                              ;-KEY16 THRESHOLD
+ 354  004C                              MOV     A,Key16Threshold
+ 355  004C                              MOV     _GLOBE_VARIES[18],A
+ 356  004C                              endif
+ 357  004C              
+ 358  004C                              if      TouchKeyAmount > 16
+ 359  004C                              ;-KEY17 THRESHOLD
+ 360  004C                              MOV     A,Key17Threshold
+文件：MAIN_PROGRAM_V102.asm 编译器版本 2.96 页次38
+
+ 361  004C                              MOV     _GLOBE_VARIES[19],A
+ 362  004C                              endif
+ 363  004C              
+ 364  004C                              if      TouchKeyAmount > 17
+ 365  004C                              ;-KEY18 THRESHOLD
+ 366  004C                              MOV     A,Key18Threshold
+ 367  004C                              MOV     _GLOBE_VARIES[20],A
+ 368  004C                              endif
+ 369  004C              
+ 370  004C                              if      TouchKeyAmount > 18
+ 371  004C                              ;-KEY19 THRESHOLD
+ 372  004C                              MOV     A,Key19Threshold
+ 373  004C                              MOV     _GLOBE_VARIES[21],A
+ 374  004C                              endif
+ 375  004C              
+ 376  004C                              if      TouchKeyAmount > 19
+ 377  004C                              ;-KEY20 THRESHOLD
+ 378  004C                              MOV     A,Key20Threshold
+ 379  004C                              MOV     _GLOBE_VARIES[22],A
+ 380  004C                              endif
+ 381  004C              
+ 382  004C                              if      TouchKeyAmount > 20
+ 383  004C                              ;-KEY17 THRESHOLD
+ 384  004C                              MOV     A,Key21Threshold
+ 385  004C                              MOV     _GLOBE_VARIES[23],A
+ 386  004C                              endif
+ 387  004C              
+ 388  004C                              if      TouchKeyAmount > 21
+ 389  004C                              ;-KEY18 THRESHOLD
+ 390  004C                              MOV     A,Key22Threshold
+ 391  004C                              MOV     _GLOBE_VARIES[24],A
+ 392  004C                              endif
+ 393  004C              
+ 394  004C                              if      TouchKeyAmount > 22
+ 395  004C                              ;-KEY19 THRESHOLD
+ 396  004C                              MOV     A,Key23Threshold
+ 397  004C                              MOV     _GLOBE_VARIES[25],A
+ 398  004C                              endif
+ 399  004C              
+ 400  004C                              if      TouchKeyAmount > 23
+ 401  004C                              ;-KEY20 THRESHOLD
+ 402  004C                              MOV     A,Key24Threshold
+ 403  004C                              MOV     _GLOBE_VARIES[26],A
+ 404  004C                              endif
+ 405  004C              
+ 406  004C                              if      TouchKeyAmount > 24
+ 407  004C                              ;-KEY17 THRESHOLD
+ 408  004C                              MOV     A,Key25Threshold
+ 409  004C                              MOV     _GLOBE_VARIES[27],A
+ 410  004C                              endif
+ 411  004C              
+ 412  004C                              if      TouchKeyAmount > 25
+ 413  004C                              ;-KEY18 THRESHOLD
+ 414  004C                              MOV     A,Key26Threshold
+ 415  004C                              MOV     _GLOBE_VARIES[28],A
+ 416  004C                              endif
+ 417  004C              
+ 418  004C                              if      TouchKeyAmount > 26
+ 419  004C                              ;-KEY19 THRESHOLD
+ 420  004C                              MOV     A,Key27Threshold
+文件：MAIN_PROGRAM_V102.asm 编译器版本 2.96 页次39
+
+ 421  004C                              MOV     _GLOBE_VARIES[29],A
+ 422  004C                              endif
+ 423  004C              
+ 424  004C                              if      TouchKeyAmount > 27
+ 425  004C                              ;-KEY20 THRESHOLD
+ 426  004C                              MOV     A,Key28Threshold
+ 427  004C                              MOV     _GLOBE_VARIES[30],A
+ 428  004C                              endif
+ 429  004C              
+ 430  004C                              if      TouchKeyAmount > 28
+ 431  004C                              ;-KEY29 THRESHOLD
+ 432  004C                              MOV     A,Key29Threshold
+ 433  004C                              MOV     _GLOBE_VARIES[31],A
+ 434  004C                              endif
+ 435  004C              
+ 436  004C                              if      TouchKeyAmount > 29
+ 437  004C                              ;-KEY30 THRESHOLD
+ 438  004C                              MOV     A,Key30Threshold
+ 439  004C                              MOV     _GLOBE_VARIES[32],A
+ 440  004C                              endif
+ 441  004C              
+ 442  004C                              if      TouchKeyAmount > 30
+ 443  004C                              ;-KEY31 THRESHOLD
+ 444  004C                              MOV     A,Key31Threshold
+ 445  004C                              MOV     _GLOBE_VARIES[33],A
+ 446  004C                              endif
+ 447  004C              
+ 448  004C                              if      TouchKeyAmount > 31
+ 449  004C                              ;-KEY32 THRESHOLD
+ 450  004C                              MOV     A,Key32Threshold
+ 451  004C                              MOV     _GLOBE_VARIES[34],A
+ 452  004C                              endif
+ 453  004C              
+ 454  004C              
+ 455  004C  0003                        RET
+ 456  004D              
+ 457  004D              
+ 458  004D              
+ 459  004D              
+ 460  004D                              END
+
+
+        0 Errors, 0 Warnings

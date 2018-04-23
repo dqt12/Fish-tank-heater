@@ -1,0 +1,136 @@
+
+连接器　版本8.7.2.161220
+Input Object File: D:\HOLTEK Reference\信霖特标规格书\TB4063AF20_20150807_LIBV413--V3\20150807_LIBV413\OUTPUT\MAIN_PROGRAM_V102.OBJ
+Input Object File: D:\HOLTEK Reference\信霖特标规格书\TB4063AF20_20150807_LIBV413--V3\20150807_LIBV413\OUTPUT\USER_PROGRAM.OBJ
+Input Object File: D:\HOLTEK Reference\信霖特标规格书\TB4063AF20_20150807_LIBV413--V3\20150807_LIBV413\OUTPUT\STARTUP1_L.OBJ
+Input Object File: C:\Users\dylee\AppData\Local\Temp\TB4063AF20_LIBV413.OBJ
+
+Input Library File: C:\Program Files\Holtek MCU Development Tools\HT-IDE3000V7.x\LIB\LIBHOLTEKGCC.LIB
+Input Library File: C:\Program Files\Holtek MCU Development Tools\HT-IDE3000V7.x\LIB\v3_tabrd_mrsc.lib
+
+
+     Bank    Start     End      Length     Class    AvgIns    Name
+     00h     0000h     0003h    0004h      CODE               PROGRAM_ENTRY (D:\HOLTEK Reference\信霖特标规格书\TB4063AF20_20150807_LIBV413--V3\20150807_LIBV413\OUTPUT\MAIN_PROGRAM_V102.OBJ)
+     00h     0004h     0007h    0004h      CODE               @Interrupt_Extemal_code (D:\HOLTEK Reference\信霖特标规格书\TB4063AF20_20150807_LIBV413--V3\20150807_LIBV413\OUTPUT\USER_PROGRAM.OBJ)
+     00h     0008h     0008h    0001h      CODE               TOUCH_INT (C:\Users\dylee\AppData\Local\Temp\TB4063AF20_LIBV413.OBJ)
+     00h     0009h     0009h    0001h      CODE               LIBRARY_VERSION (C:\Users\dylee\AppData\Local\Temp\TB4063AF20_LIBV413.OBJ)
+     00h     000ah     000eh    0005h      CODE               _Interrupt_Extemal (D:\HOLTEK Reference\信霖特标规格书\TB4063AF20_20150807_LIBV413--V3\20150807_LIBV413\OUTPUT\USER_PROGRAM.OBJ)
+     00h     000fh     0012h    0004h      CODE               _USER_PROGRAM_INITIAL (D:\HOLTEK Reference\信霖特标规格书\TB4063AF20_20150807_LIBV413--V3\20150807_LIBV413\OUTPUT\USER_PROGRAM.OBJ)
+     00h     0014h     0017h    0004h      CODE               TIME_BASE_INT (C:\Users\dylee\AppData\Local\Temp\TB4063AF20_LIBV413.OBJ)
+     00h     0018h     0064h    004dh      CODE               MAIN_PROGRAM (D:\HOLTEK Reference\信霖特标规格书\TB4063AF20_20150807_LIBV413--V3\20150807_LIBV413\OUTPUT\MAIN_PROGRAM_V102.OBJ)
+     00h     0065h     04ebh    0487h      CODE               TKS_LIBRARY_CODE (C:\Users\dylee\AppData\Local\Temp\TB4063AF20_LIBV413.OBJ)
+     00h     04ech     04f5h    000ah      CODE               _USER_PROGRAM (D:\HOLTEK Reference\信霖特标规格书\TB4063AF20_20150807_LIBV413--V3\20150807_LIBV413\OUTPUT\USER_PROGRAM.OBJ)
+     00h     0060h     0082h    0023h      DATA     0.3142    TKS_LIBRARY_DATA0 (C:\Users\dylee\AppData\Local\Temp\TB4063AF20_LIBV413.OBJ)
+     00h     0083h     0084h    0002h      DATA     3         MAIN_DATA (D:\HOLTEK Reference\信霖特标规格书\TB4063AF20_20150807_LIBV413--V3\20150807_LIBV413\OUTPUT\MAIN_PROGRAM_V102.OBJ)
+     00h     0085h     0085h    0001h      DATA     2         @data_r104 (isr:ra~rh)
+     00h     0086h     0086h    0001h      DATA     2         @data_r204 (isr:ra~rh)
+     01h     0080h     00d7h    0058h      DATA     0         TKS_LIBRARY_DATA1 (C:\Users\dylee\AppData\Local\Temp\TB4063AF20_LIBV413.OBJ)
+
+     Local Sections
+
+     Bank    Start     End      Length     Class    AvgIns    Name
+     00h     0087h     0087h    0000h      LOCAL    0         @dummy4 (D:\HOLTEK Reference\信霖特标规格书\TB4063AF20_20150807_LIBV413--V3\20150807_LIBV413\OUTPUT\USER_PROGRAM.OBJ)
+     00h     0087h     0087h    0000h      LOCAL    0         _Interrupt_Extemal (D:\HOLTEK Reference\信霖特标规格书\TB4063AF20_20150807_LIBV413--V3\20150807_LIBV413\OUTPUT\USER_PROGRAM.OBJ)
+
+     Indepentent Local Sections
+
+     Bank    Start     End      Length     Class    AvgIns    Name
+     00h     0087h     0087h    0000h      ILOCAL   0         _USER_PROGRAM_INITIAL (D:\HOLTEK Reference\信霖特标规格书\TB4063AF20_20150807_LIBV413--V3\20150807_LIBV413\OUTPUT\USER_PROGRAM.OBJ)
+     00h     0087h     0087h    0000h      ILOCAL   0         _USER_PROGRAM (D:\HOLTEK Reference\信霖特标规格书\TB4063AF20_20150807_LIBV413--V3\20150807_LIBV413\OUTPUT\USER_PROGRAM.OBJ)
+
+     Public Symbols Information
+     Address            Public by Name
+     0082h[3]           _ANY_KEY_PRESSF
+     0065h              _BS84B06A_LIBV413
+     00d9h              _BS84B06A_LIBV413_INITIAL
+     0161h              _CHECK_KEY_WAKEUP
+     006bh              _DATA_BUF
+     0082h[0]           _FORCE_CALIBRATEF
+     04d4h              _GET_ENV_VALUE
+     04cch              _GET_KEY_AMOUNT
+     04ceh              _GET_KEY_BITMAP
+     04c7h              _GET_LIB_VER
+     04d1h              _GET_RCC_VALUE
+     04d7h              _GET_REF_VALUE
+     0060h              _GLOBE_VARIES
+     000ah              _Interrupt_Extemal
+     0077h              _KEY_DATA
+     0076h              _KEY_IO_SEL
+     0198h              _KEY_REF
+     0180h              _KEY_STATUS
+     00d9h              _LIBRARY_RESET
+     0050h              _LOAD_HXT_REFERENCE
+     0050h              _LOAD_TKS_GLOBE_VARIES
+     0073h              _SAMPLE_TIMES
+     0082h[2]           _SCAN_CYCLEF
+     0074h              _STANDBY_TIME
+     0082h[5]           _TKS_250MSF
+     0082h[6]           _TKS_500MSF
+     0082h[4]           _TKS_63MSF
+     0082h[1]           _TKS_ACTIVEF
+     0082h              _TKS_FLAGA
+     0075h              _TKS_TIME_BASE
+     04ech              _USER_PROGRAM
+     000fh              _USER_PROGRAM_INITIAL
+     0085h              r104
+     0086h              r204
+
+     Address            Public by Value
+     000ah              _Interrupt_Extemal
+     000fh              _USER_PROGRAM_INITIAL
+     0050h              _LOAD_TKS_GLOBE_VARIES
+     0050h              _LOAD_HXT_REFERENCE
+     0060h              _GLOBE_VARIES
+     0065h              _BS84B06A_LIBV413
+     006bh              _DATA_BUF
+     0073h              _SAMPLE_TIMES
+     0074h              _STANDBY_TIME
+     0075h              _TKS_TIME_BASE
+     0076h              _KEY_IO_SEL
+     0077h              _KEY_DATA
+     0082h              _TKS_FLAGA
+     0085h              r104
+     0086h              r204
+     00d9h              _LIBRARY_RESET
+     00d9h              _BS84B06A_LIBV413_INITIAL
+     0161h              _CHECK_KEY_WAKEUP
+     0180h              _KEY_STATUS
+     0198h              _KEY_REF
+     0082h[0]           _FORCE_CALIBRATEF
+     0082h[1]           _TKS_ACTIVEF
+     0082h[2]           _SCAN_CYCLEF
+     0082h[3]           _ANY_KEY_PRESSF
+     0082h[4]           _TKS_63MSF
+     0082h[5]           _TKS_250MSF
+     0082h[6]           _TKS_500MSF
+     04c7h              _GET_LIB_VER
+     04cch              _GET_KEY_AMOUNT
+     04ceh              _GET_KEY_BITMAP
+     04d1h              _GET_RCC_VALUE
+     04d4h              _GET_ENV_VALUE
+     04d7h              _GET_REF_VALUE
+     04ech              _USER_PROGRAM
+
+
+ROM Usage Statistics
+     Size      Used     Percentage
+     0c00h     04f5h    41%
+
+RAM Usage Statistics
+    Bank      Size      Used     Percentage
+     00h       00a0h     0027h    24%
+     01h       0080h     0058h    68%
+     Total     0120h     007fh    44%
+
+Use Stack Count
+_Interrupt_Extemal: 0
+_USER_PROGRAM: 0
+
+Call Tree
+    @dummy4
+        _Interrupt_Extemal (0)
+    _USER_PROGRAM
+
+HLINK : 程序的开始执行点在程序段'PROGRAM_ENTRY'（地址0）。定义在'D:\HOLTEK Reference\信霖特标规格书\TB4063AF20_20150807_LIBV413--V3\20150807_LIBV413\OUTPUT\MAIN_PROGRAM_V102.OBJ' 文件中
+
+错误总数 : 0  警告总数 : 0
